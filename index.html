@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reniel Tabora | Portfolio</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root{
+  --text:#fff;
+  --card:rgba(255,255,255,.08);
+  --glass:rgba(15,20,30,.55);
+  --glass2:rgba(255,255,255,.12);
+}
+.light{
+  --text:#111;
+  --card:rgba(255,255,255,.9);
+  --glass:rgba(255,255,255,.75);
+  --glass2:rgba(0,0,0,.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(270deg,#0f2027,#203a43,#2c5364);
+  background-size:600% 600%;
+  animation:bg 15s infinite;
+  color:var(--text);
+  overflow:hidden;
+}
+
+@keyframes bg{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* floating lights */
+.lightfx{
+  position:absolute;
+  width:340px;height:340px;
+  background:radial-gradient(circle,rgba(0,255,255,.45),transparent 70%);
+  filter:blur(70px);
+  animation:float 8s infinite alternate;
+  left:-60px; top:12%;
+  opacity:.9;
+}
+.lightfx.two{
+  background:radial-gradient(circle,rgba(255,0,255,.38),transparent 70%);
+  bottom:6%;right:-70px;
+  animation-delay:3s;
+}
+.lightfx.three{
+  width:260px;height:260px;
+  background:radial-gradient(circle,rgba(67,233,123,.35),transparent 70%);
+  top:-40px; right:12%;
+  animation-delay:1.3s;
+  filter:blur(65px);
+}
+@keyframes float{to{transform:translateY(-55px) translateX(15px)}}
+
+/* subtle 3D particles */
+.particles{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.10) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,.08) 0 2px, transparent 3px),
+    radial-gradient(circle at 60% 20%, rgba(255,255,255,.06) 0 2px, transparent 3px),
+    radial-gradient(circle at 30% 80%, rgba(255,255,255,.07) 0 2px, transparent 3px);
+  animation: drift 10s linear infinite;
+  opacity:.7;
+}
+@keyframes drift{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
+  100%{transform:translateY(0)}
+}
+
+/* toggle */
+.toggle{
+  position:absolute;
+  top:20px; right:20px;
+  padding:8px 14px;
+  border-radius:20px;
+  background:rgba(255,255,255,.25);
+  cursor:pointer;
+  font-size:13px;
+  z-index:30;
+  user-select:none;
+}
+
+/* hamburger */
+.hamburger{
+  position:absolute;
+  top:22px;
+  left:22px;
+  width:32px;
+  height:24px;
+  cursor:pointer;
+  z-index:40;
+  user-select:none;
+}
+.hamburger span{
+  display:block;
+  height:4px;
+  width:100%;
+  background:linear-gradient(90deg,#00f2fe,#4facfe,#43e97b);
+  margin:4px 0;
+  border-radius:4px;
+  box-shadow:0 0 12px rgba(0,255,255,.65);
+  transition:.25s ease;
+}
+.hamburger.active span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+/* sidebar overlay */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(3px);
+  display:none;
+  z-index:25;
+}
+.overlay.active{display:block}
+
+/* sidebar */
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-340px;
+  width:320px;
+  height:100vh;
+  padding:22px 18px;
+  background:var(--glass);
+  backdrop-filter:blur(22px);
+  box-shadow:22px 0 70px rgba(0,0,0,.7);
+  transition:.45s cubic-bezier(.2,.9,.2,1);
+  z-index:35;
+  border-radius:0 28px 28px 0;
+  overflow:hidden;
+}
+
+.side-menu::before{
+  content:'';
+  position:absolute;
+  inset:-3px;
+  border-radius:0 30px 30px 0;
+  background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
+  background-size:400%;
+  filter:blur(10px);
+  z-index:-1;
+  animation:rainbow 6s linear infinite;
+  opacity:.7;
+}
+@keyframes rainbow{
+  0%{background-position:0%}
+  100%{background-position:400%}
+}
+
+.side-menu.active{
+  left:0;
+}
+
+.menu-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.menu-top h3{
+  font-size:18px;
+  letter-spacing:.6px;
+}
+.menu-close{
+  cursor:pointer;
+  padding:8px 10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.18);
+  font-size:13px;
+}
+
+.menu-note{
+  font-size:12px;
+  opacity:.85;
+  margin-bottom:14px;
+  line-height:1.5;
+}
+
+.tool-list{
+  margin-top:8px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.tool-list a{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 12px;
+  border-radius:16px;
+  text-decoration:none;
+  color:var(--text);
+  font-size:13px;
+  background:var(--glass2);
+  transition:.25s ease;
+  border:1px solid rgba(255,255,255,.10);
+}
+.tool-list a span{
+  opacity:.9;
+  font-size:12px;
+}
+.tool-list a:hover{
+  transform:translateX(6px) scale(1.02);
+  background:linear-gradient(90deg,#00f2fe,#4facfe,#43e97b);
+  box-shadow:0 0 22px rgba(0,255,255,.55);
+}
+
+/* rainbow border wrapper */
+.wrapper{
+  position:relative;
+  border-radius:28px;
+  z-index:10;
+}
+.wrapper::before{
+  content:'';
+  position:absolute;
+  inset:-4px;
+  border-radius:30px;
+  background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
+  background-size:400%;
+  filter:blur(8px);
+  z-index:-1;
+  animation:rainbow 5s linear infinite;
+}
+
+.container{
+  width:390px;
+  padding:28px;
+  border-radius:26px;
+  background:var(--card);
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 70px rgba(0,0,0,.6);
+  transform:perspective(1000px) rotateX(6deg);
+}
+
+/* profile */
+.profile-img{
+  width:130px;height:130px;
+  border-radius:50%;
+  display:block;
+  margin:0 auto;
+  border:4px solid rgba(255,255,255,.45);
+  animation:avatarFloat 3.5s ease-in-out infinite;
+}
+@keyframes avatarFloat{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+  100%{transform:translateY(0)}
+}
+
+/* typing name */
+.name{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  margin-top:16px;
+}
+#typedName{
+  font-size:23px;
+  font-weight:600;
+  border-right:2px solid currentColor;
+  padding-right:4px;
+  animation:blink 1s infinite;
+  min-height:30px;
+}
+@keyframes blink{
+  0%,50%,100%{border-color:transparent}
+  25%,75%{border-color:currentColor}
+}
+
+.verify{
+  width:20px;height:20px;
+  border-radius:50%;
+  background:#1da1f2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 0 10px #1da1f2;
+  font-size:13px;
+}
+
+.info{text-align:center;font-size:14px;opacity:.9}
+
+.description{
+  margin-top:14px;
+  padding:12px;
+  text-align:center;
+  font-size:14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.14);
+}
+
+.time{text-align:center;margin:18px 0;font-weight:600}
+
+.btn{
+  margin:10px auto 0;
+  display:block;
+  padding:10px 22px;
+  border-radius:20px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background:linear-gradient(90deg,#00f2fe,#4facfe,#43e97b);
+  color:#000;
+}
+
+/* platforms */
+.platforms{
+  display:flex;
+  justify-content:space-around;
+  margin-top:18px;
+  font-size:13px;
+}
+.platforms a{
+  text-decoration:none;
+  color:var(--text);
+  padding:8px 12px;
+  border-radius:12px;
+  background:rgba(255,255,255,.22);
+}
+
+/* modal */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:50;
+}
+.modal-content{
+  width:320px;
+  padding:20px;
+  border-radius:22px;
+  background:#111;
+  color:#fff;
+  position:relative;
+}
+.modal-content::before{
+  content:'';
+  position:absolute;
+  inset:-3px;
+  border-radius:24px;
+  background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
+  background-size:400%;
+  filter:blur(6px);
+  z-index:-1;
+  animation:rainbow 4s linear infinite;
+}
+.close{
+  position:absolute;
+  top:10px;right:14px;
+  cursor:pointer;
+}
+.skill{margin-bottom:10px}
+.bar{height:8px;border-radius:10px;background:#333}
+.fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#ff00cc,#00ff99)}
+
+.social a{
+  display:block;
+  margin:8px 0;
+  padding:10px;
+  border-radius:12px;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+  background:rgba(255,255,255,.15);
+}
+
+/* small screens */
+@media(max-width:420px){
+  .container{width:92vw}
+}
+</style>
+</head>
+
+<body>
+<div class="particles"></div>
+<div class="lightfx"></div>
+<div class="lightfx two"></div>
+<div class="lightfx three"></div>
+
+<div class="toggle" onclick="toggleMode()">🌗 Mode</div>
+
+<!-- hamburger + overlay + sidebar -->
+<div class="hamburger" id="hamburger" onclick="toggleMenu()">
+  <span></span><span></span><span></span>
+</div>
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<div class="side-menu" id="sideMenu">
+  <div class="menu-top">
+    <h3>⚡ Tools Menu</h3>
+    <div class="menu-close" onclick="closeMenu()">Close ✕</div>
+  </div>
+
+  <div class="menu-note">
+    High-quality tools shortcuts. Click any tool to open in a new tab.
+  </div>
+
+  <div class="tool-list">
+    <a href="https://mysteriousq-autoshare.onrender.com/" target="_blank">AUTO SHARE <span>↗</span></a>
+    <a href="https://mysteriousq-sms-bomber.onrender.com/" target="_blank">SMS BOMBER <span>↗</span></a>
+    <a href="https://mysteriousq-tempmail.onrender.com/" target="_blank">TEMPMAIL <span>↗</span></a>
+    <a href="https://mysteriousq-website-screenshot.onrender.com/" target="_blank">WEBSITE SCREENSHOT <span>↗</span></a>
+    <a href="https://mysteriousq-spotifydl.onrender.com/" target="_blank">SPOTIFY DOWNLOADER <span>↗</span></a>
+    <a href="https://mysteriousq-ytdl.onrender.com/" target="_blank">YOUTUBE DOWNLOADER <span>↗</span></a>
+    <a href="https://mysteriousq-fbdl.onrender.com/" target="_blank">FACEBOOK DOWNLOADER <span>↗</span></a>
+    <a href="https://mysteriousq-tiktokdl.onrender.com/" target="_blank">TIKTOK DOWNLOADER <span>↗</span></a>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="container">
+
+    <img src="https://img.sanishtech.com/u/5eef3fa4669bfe5a6243300feb999e05.jpg" class="profile-img" alt="Profile">
+
+    <div class="name">
+      <div id="typedName"></div>
+      <div class="verify">✓</div>
+    </div>
+
+    <p class="info">19 years old • Philippines</p>
+
+    <div class="description">
+      Programmer & Modder (2022–2026)<br>
+      🎬 Video Editor
+    </div>
+
+    <div class="time" id="phTime"></div>
+
+    <button class="btn" onclick="openSkills()">View Skills</button>
+    <button class="btn" onclick="openSocial()">View Social</button>
+
+    <div class="platforms">
+      <a href="https://github.com" target="_blank">GitHub</a>
+      <a href="https://vercel.com" target="_blank">Vercel</a>
+      <a href="https://render.com" target="_blank">Render</a>
+      <a href="https://www.netlify.com" target="_blank">Netlify</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- SKILLS MODAL -->
+<div class="modal" id="skillsModal">
+  <div class="modal-content">
+    <div class="close" onclick="closeSkills()">✕</div>
+    <div class="skill">HTML 90%<div class="bar"><div class="fill" style="width:90%"></div></div></div>
+    <div class="skill">CSS 85%<div class="bar"><div class="fill" style="width:85%"></div></div></div>
+    <div class="skill">Python 75%<div class="bar"><div class="fill" style="width:75%"></div></div></div>
+    <div class="skill">Java 70%<div class="bar"><div class="fill" style="width:70%"></div></div></div>
+  </div>
+</div>
+
+<!-- SOCIAL MODAL -->
+<div class="modal" id="socialModal">
+  <div class="modal-content social">
+    <div class="close" onclick="closeSocial()">✕</div>
+    <a href="https://www.facebook.com/rrreeeennnn" target="_blank">Facebook</a>
+    <a href="https://pin.it/2WhNa7xek" target="_blank">Pinterest</a>
+    <a href="https://t.me/ashley921" target="_blank">Telegram</a>
+  </div>
+</div>
+
+<script>
+/* PH time */
+function updatePHTime(){
+  document.getElementById('phTime').innerHTML =
+    new Date().toLocaleString('en-US',{timeZone:'Asia/Manila'});
+}
+setInterval(updatePHTime,1000); updatePHTime();
+
+/* light mode toggle */
+function toggleMode(){ document.body.classList.toggle('light'); }
+
+/* modals */
+function openSkills(){ document.getElementById('skillsModal').style.display='flex'; }
+function closeSkills(){ document.getElementById('skillsModal').style.display='none'; }
+
+function openSocial(){ document.getElementById('socialModal').style.display='flex'; }
+function closeSocial(){ document.getElementById('socialModal').style.display='none'; }
+
+/* typing name */
+const text="Reniel Tabora";
+let i=0;
+(function type(){
+  const el=document.getElementById('typedName');
+  if(i<text.length){
+    el.innerHTML+=text[i++];
+    setTimeout(type,120);
+  }
+})();
+
+/* sidebar menu */
+function toggleMenu(){
+  const menu=document.getElementById('sideMenu');
+  const overlay=document.getElementById('overlay');
+  const ham=document.getElementById('hamburger');
+  menu.classList.toggle('active');
+  overlay.classList.toggle('active');
+  ham.classList.toggle('active');
+}
+function closeMenu(){
+  document.getElementById('sideMenu').classList.remove('active');
+  document.getElementById('overlay').classList.remove('active');
+  document.getElementById('hamburger').classList.remove('active');
+}
+
+/* close menu with ESC */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape') closeMenu();
+});
+</script>
+</body>
+</html>
