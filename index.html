@@ -1,1364 +1,626 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reniel Tabora</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Reniel Tabora — Portfolio</title>
+  <meta name="theme-color" content="#0b1220" />
+  <style>
+    :root{
+      --bg0:#070a12;
+      --bg1:#0b1220;
+      --card: rgba(255,255,255,.08);
+      --card2: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.55);
+      --stroke: rgba(255,255,255,.14);
+      --shadow: 0 18px 45px rgba(0,0,0,.45);
+      --radius: 22px;
+      --accent: 255,255,255;
+      --glow: 0 0 18px rgba(255,255,255,.12);
+    }
+    [data-theme="light"]{
+      --bg0:#f7f8fb;
+      --bg1:#ffffff;
+      --card: rgba(0,0,0,.04);
+      --card2: rgba(0,0,0,.06);
+      --text: rgba(0,0,0,.88);
+      --muted: rgba(0,0,0,.64);
+      --muted2: rgba(0,0,0,.48);
+      --stroke: rgba(0,0,0,.10);
+      --shadow: 0 18px 45px rgba(0,0,0,.12);
+      --glow: 0 0 18px rgba(0,0,0,.08);
+    }
 
-<style>
-:root{
-  --bg:#0b0f1a;
-  --card:#141a2b;
-  --text:#ffffff;
-  --muted:#b5b9d6;
-  --accent:#6f7dff;
-}
-
-[data-theme="light"]{
-  --bg:#f4f6ff;
-  --card:#ffffff;
-  --text:#0b0f1a;
-  --muted:#555;
-  --accent:#4a5bff;
-}
-
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto;
-  background:linear-gradient(180deg,#0b0f1a,#121a35);
-  color:var(--text);
-}
-
-.container{
-  max-width:420px;
-  margin:auto;
-  padding:16px;
-}
-
-/* HEADER */
-.header{
-  text-align:center;
-  padding:20px 16px;
-  background:var(--card);
-  border-radius:22px;
-  box-shadow:0 20px 50px rgba(0,0,0,.4);
-  transform:perspective(800px) rotateX(4deg);
-}
-
-.profile{
-  width:90px;
-  height:90px;
-  border-radius:22px;
-  object-fit:cover;
-  margin-bottom:10px;
-}
-
-.name span{
-  display:inline-block;
-  font-size:28px;
-  font-weight:800;
-  opacity:0;
-  transform:translateY(12px);
-  animation:pop .6s forwards;
-}
-.name span:nth-child(n){animation-delay:calc(var(--i)*.05s)}
-
-@keyframes pop{
-  to{opacity:1;transform:translateY(0)}
-}
-
-.desc{
-  font-size:14px;
-  color:var(--muted);
-  margin-top:6px;
-}
-
-/* STATS */
-.stats{
-  display:flex;
-  justify-content:space-between;
-  margin-top:16px;
-}
-.stat{
-  flex:1;
-  margin:0 4px;
-  background:#0f1530;
-  border-radius:16px;
-  padding:10px;
-}
-.stat b{font-size:16px}
-.stat small{color:var(--muted)}
-
-/* BUTTONS */
-.buttons{
-  display:flex;
-  gap:10px;
-  margin:16px 0;
-}
-button{
-  flex:1;
-  padding:12px;
-  border-radius:16px;
-  border:none;
-  background:var(--accent);
-  color:white;
-  font-weight:700;
-  font-size:14px;
-}
-button.secondary{
-  background:#1c244d;
-}
-
-/* INFO */
-.info{
-  background:var(--card);
-  border-radius:18px;
-  padding:12px;
-  font-size:13px;
-  margin-bottom:12px;
-}
-.info span{
-  display:block;
-  margin:4px 0;
-}
-
-/* IFRAME PREVIEW */
-.preview{
-  height:420px;
-  border-radius:18px;
-  overflow:hidden;
-  background:#000;
-}
-iframe{
-  width:100%;
-  height:100%;
-  border:none;
-}
-
-/* TOGGLE */
-.toggle{
-  text-align:center;
-  margin-top:10px;
-}
-.toggle button{
-  background:none;
-  border:1px solid var(--accent);
-  color:var(--accent);
-}
-</style>
-</head>
-
-<body>
-<div class="container">
-
-  <!-- HEADER -->
-  <div class="header">
-    <img class="profile" src="https://img.sanishtech.com/u/26a2f7005696403d64c7854507e2a4c9.jpg">
-
-    <div class="name" id="name"></div>
-    <div class="desc">App Modder 2022–2026 • Editor videos</div>
-
-    <div class="stats">
-      <div class="stat"><b>41k</b><br><small>Followers</small></div>
-      <div class="stat"><b>392k</b><br><small>Likes</small></div>
-      <div class="stat"><b id="views">0</b><br><small>Views</small></div>
-    </div>
-  </div>
-
-  <!-- BUTTONS -->
-  <div class="buttons">
-    <button onclick="loadSite('home')">Home</button>
-    <button class="secondary" onclick="loadSite('first')">Portfolio</button>
-    <button class="secondary" onclick="loadSite('auto')">Autobot</button>
-  </div>
-
-  <!-- INFO -->
-  <div class="info">
-    <span id="time">PH Time: --</span>
-    <span id="battery">Battery: --</span>
-  </div>
-
-  <!-- PREVIEW -->
-  <div class="preview">
-    <iframe id="frame"></iframe>
-  </div>
-
-  <!-- THEME -->
-  <div class="toggle">
-    <button onclick="toggleTheme()">Dark / Light</button>
-  </div>
-
-</div>
-
-<script>
-/* NAME ANIMATION */
-const name = "Reniel Tabora";
-const nameEl = document.getElementById("name");
-[...name].forEach((c,i)=>{
-  const s=document.createElement("span");
-  s.textContent=c===" "?" ":c;
-  s.style.setProperty("--i",i);
-  nameEl.appendChild(s);
-});
-
-/* VIEWS */
-let views=localStorage.getItem("views")||0;
-views++;
-localStorage.setItem("views",views);
-document.getElementById("views").textContent=views;
-
-/* TIME PH */
-setInterval(()=>{
-  const now=new Date().toLocaleString("en-PH",{timeZone:"Asia/Manila"});
-  document.getElementById("time").textContent="PH Time: "+now;
-},1000);
-
-/* BATTERY */
-if(navigator.getBattery){
-  navigator.getBattery().then(b=>{
-    document.getElementById("battery").textContent=
-      "Battery: "+Math.round(b.level*100)+"%";
-  });
-}else{
-  document.getElementById("battery").textContent="Battery: N/A";
-}
-
-/* LOAD SITES */
-function loadSite(t){
-  const f=document.getElementById("frame");
-  if(t==="home") f.srcdoc="<h2 style='color:white;text-align:center;padding-top:40px'>Welcome 👋</h2>";
-  if(t==="first") f.src="https://visionary-naiad-bb54e3.netlify.app/";
-  if(t==="auto") f.src="https://auto-zvok.onrender.com/";
-}
-
-/* THEME */
-function toggleTheme(){
-  document.body.dataset.theme=
-    document.body.dataset.theme==="light"?"dark":"light";
-}
-</script>
-</body>
-</html>      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color: var(--text);
-      background: var(--bg);
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(255,255,255,.08), transparent 60%),
+                  radial-gradient(900px 700px at 90% 30%, rgba(255,255,255,.06), transparent 60%),
+                  linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
 
-    /* 3D canvas background */
-    #bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      width: 100%;
-      height: 100%;
-      display:block;
-    }
-
-    /* Soft gradients over 3D */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        radial-gradient(1000px 600px at 20% 20%, rgba(120,140,255,.22), transparent 60%),
-        radial-gradient(900px 700px at 80% 30%, rgba(180,120,255,.14), transparent 65%),
-        radial-gradient(1000px 700px at 50% 85%, rgba(60,255,220,.10), transparent 55%),
-        linear-gradient(to bottom, rgba(0,0,0,.12), rgba(0,0,0,.22));
-      mix-blend-mode: screen;
-      opacity: .95;
-    }
-    [data-theme="light"] .overlay{
-      mix-blend-mode: multiply;
-      opacity: .75;
-      background:
-        radial-gradient(1000px 600px at 20% 20%, rgba(70,95,255,.20), transparent 60%),
-        radial-gradient(900px 700px at 80% 30%, rgba(150,70,255,.12), transparent 65%),
-        radial-gradient(1000px 700px at 50% 85%, rgba(0,160,140,.10), transparent 55%),
-        linear-gradient(to bottom, rgba(255,255,255,.10), rgba(255,255,255,.22));
-    }
-
-    /* Layout */
-    .wrap{
-      position: relative;
-      z-index: 2;
-      min-height: 100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 28px 18px 60px;
-    }
-
-    .card{
-      width: min(1060px, 100%);
-      border-radius: var(--radius);
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      box-shadow: var(--shadow);
-      backdrop-filter: var(--blur);
-      -webkit-backdrop-filter: var(--blur);
-      overflow:hidden;
+    /* 3D ambient blobs (lightweight) */
+    .stage{
+      position:fixed; inset:0;
+      pointer-events:none;
+      perspective: 900px;
       transform-style: preserve-3d;
-      position: relative;
+      z-index:0;
+    }
+    .blob{
+      position:absolute;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), rgba(255,255,255,0) 65%);
+      filter: blur(2px);
+      opacity:.7;
+      transform: translate3d(0,0,0);
+      animation: float 7.5s ease-in-out infinite;
+      will-change: transform;
+    }
+    .blob.b1{ left:-120px; top:80px; animation-duration:8.2s; }
+    .blob.b2{ right:-140px; top:160px; width:380px; height:380px; opacity:.55; animation-duration:9.4s; }
+    .blob.b3{ left:20%; bottom:-180px; width:420px; height:420px; opacity:.45; animation-duration:10.3s; }
+
+    @keyframes float{
+      0%,100%{ transform: translate3d(0,0,0) rotateZ(0deg); }
+      50%{ transform: translate3d(0,-16px,50px) rotateZ(8deg); }
     }
 
-    /* Top bar */
+    /* Content */
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 18px 14px 26px;
+      padding-top: max(18px, env(safe-area-inset-top));
+      padding-bottom: max(26px, env(safe-area-inset-bottom));
+    }
+
     .topbar{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 14px;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--stroke);
-      background: linear-gradient(to right, rgba(255,255,255,.06), rgba(255,255,255,.02));
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width: 220px;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
+      gap:10px;
+      padding: 10px 10px;
       border: 1px solid var(--stroke);
-      background: var(--card2);
-      font-size: 13px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .dot{
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 18px rgba(140,160,255,.65);
-    }
-
-    .nav{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .btn{
-      appearance:none;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-weight: 650;
-      font-size: 13px;
-      letter-spacing:.2px;
-      cursor:pointer;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
       transform-style: preserve-3d;
     }
-    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.09); }
-    .btn:active{ transform: translateY(0px) scale(.99); }
-    .btn.primary{
-      border-color: rgba(140,160,255,.35);
-      background: rgba(140,160,255,.16);
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 0;
     }
-
-    .right-tools{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      justify-content:flex-end;
-      min-width: 240px;
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: rgba(var(--accent), .85);
+      box-shadow: var(--glow);
+      flex:0 0 auto;
     }
-
-    .switch{
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: var(--card2);
-      cursor:pointer;
-      user-select:none;
+    .brand span{
       font-size: 13px;
       color: var(--muted);
-      transition: transform .18s ease, background .18s ease;
-    }
-    .switch:hover{ transform: translateY(-1px); }
-    .toggle{
-      width: 44px;
-      height: 24px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.08);
-      position:relative;
-      flex: 0 0 auto;
-    }
-    .knob{
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.85);
-      position:absolute;
-      top: 1px; left: 1px;
-      transition: transform .22s ease;
-      box-shadow: 0 8px 18px rgba(0,0,0,.25);
-    }
-    [data-theme="light"] .knob{ background: rgba(10,18,40,.82); }
-    [data-theme="light"] .toggle .knob{ transform: translateX(20px); }
-
-    /* Main content */
-    .content{
-      display:grid;
-      grid-template-columns: 420px 1fr;
-      gap: 18px;
-      padding: 18px;
-    }
-    @media (max-width: 980px){
-      .content{ grid-template-columns: 1fr; }
-      .brand, .right-tools{ min-width: unset; }
-    }
-
-    .left{
-      padding: 18px;
-      border-radius: 18px;
-      border: 1px solid var(--stroke);
-      background: var(--card2);
-      position: relative;
+      white-space:nowrap;
       overflow:hidden;
+      text-overflow:ellipsis;
     }
-
-    .pfp-wrap{
-      display:flex;
-      gap: 14px;
-      align-items:center;
-    }
-    .pfp{
-      width: 86px;
-      height: 86px;
-      border-radius: 20px;
-      object-fit: cover;
+    .toggle{
       border: 1px solid var(--stroke);
-      box-shadow: 0 20px 55px rgba(0,0,0,.35);
-      transform: translateZ(18px);
+      background: transparent;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+      touch-action: manipulation;
+    }
+    .toggle:active{ transform: scale(.98); }
+    .toggle:hover{ background: rgba(255,255,255,.05); }
+
+    .hero{
+      margin-top: 14px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border-radius: calc(var(--radius) + 6px);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      overflow:hidden;
+      transform-style: preserve-3d;
+      position:relative;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 300px at 20% 20%, rgba(255,255,255,.10), transparent 55%),
+                  radial-gradient(450px 260px at 90% 30%, rgba(255,255,255,.08), transparent 58%);
+      pointer-events:none;
     }
 
+    .hero-inner{
+      position:relative;
+      padding: 18px 16px 14px;
+      transform-style: preserve-3d;
+    }
+
+    .avatar-row{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .avatar{
+      width: 74px; height: 74px;
+      border-radius: 22px;
+      overflow:hidden;
+      border: 1px solid var(--stroke);
+      box-shadow: 0 14px 30px rgba(0,0,0,.25);
+      flex: 0 0 auto;
+      transform: translateZ(18px);
+      background: rgba(255,255,255,.05);
+    }
+    .avatar img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .name-wrap{ min-width:0; }
     .name{
-      font-size: 34px;
-      line-height: 1.05;
+      font-size: 24px;
+      letter-spacing: .3px;
       margin: 0;
-      letter-spacing: -0.6px;
-      transform: translateZ(20px);
+      line-height: 1.1;
+      text-shadow: 0 18px 40px rgba(0,0,0,.35);
+      transform: translateZ(22px);
     }
-    .name .char{
+
+    /* Name animation (glow + shimmer) */
+    .shimmer{
       display:inline-block;
-      opacity: 0;
-      transform: translateY(14px) rotateX(30deg);
-      filter: blur(6px);
-      animation: popIn .72s cubic-bezier(.2,.8,.2,1) forwards;
+      background: linear-gradient(90deg,
+        rgba(255,255,255,.55) 0%,
+        rgba(255,255,255,.95) 25%,
+        rgba(255,255,255,.55) 50%,
+        rgba(255,255,255,.95) 75%,
+        rgba(255,255,255,.55) 100%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip:text;
+      color: transparent;
+      animation: shimmer 2.2s ease-in-out infinite;
+      will-change: background-position;
     }
-    @keyframes popIn{
-      to{ opacity:1; transform: translateY(0) rotateX(0); filter: blur(0); }
+    @keyframes shimmer{
+      0%{ background-position: 0% 50%; }
+      50%{ background-position: 100% 50%; }
+      100%{ background-position: 0% 50%; }
     }
 
     .desc{
-      margin: 10px 0 0;
+      margin: 6px 0 0;
       color: var(--muted);
-      font-weight: 520;
+      font-size: 13.5px;
+      transform: translateZ(16px);
+    }
+
+    .quick{
+      margin-top: 14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      transform: translateZ(14px);
+    }
+    .btn{
+      flex: 1 1 30%;
+      min-width: 100px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 16px;
+      font-size: 13px;
+      text-align:center;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+      user-select:none;
+      touch-action: manipulation;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(220px 90px at 20% 20%, rgba(255,255,255,.14), transparent 60%);
+      opacity:.0;
+      transition: opacity .2s ease;
+    }
+    .btn:hover::after{ opacity:.85; }
+    .btn:active{ transform: scale(.98); }
+    .btn.primary{
+      background: rgba(255,255,255,.10);
     }
 
     .stats{
+      margin-top: 14px;
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 16px;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      transform: translateZ(12px);
     }
-    .stat{
-      padding: 12px;
+    .pill{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      padding: 10px 12px;
       border-radius: 16px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      transform: translateZ(10px);
-    }
-    .stat .label{
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .stat .value{
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: .2px;
-    }
-
-    .info-row{
       display:flex;
-      gap: 10px;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* Right side preview */
-    .right{
-      padding: 18px;
-      border-radius: 18px;
-      border: 1px solid var(--stroke);
-      background: var(--card2);
-      overflow:hidden;
-      position: relative;
-    }
-
-    .panel-title{
-      display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--stroke);
-      margin-bottom: 12px;
+      align-items:center;
+      gap:10px;
     }
-    .panel-title h2{
-      margin: 0;
-      font-size: 15px;
-      letter-spacing:.2px;
-      color: var(--muted);
-      font-weight: 700;
-    }
+    .pill b{ font-size: 13px; }
+    .pill span{ font-size: 13px; color: var(--muted); }
 
-    .preview{
-      border-radius: 18px;
-      border: 1px solid var(--stroke);
-      overflow:hidden;
-      background: rgba(0,0,0,.22);
-      box-shadow: 0 18px 60px rgba(0,0,0,.30);
-      height: 520px;
+    .mini{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
       transform: translateZ(10px);
     }
-    iframe{
-      width:100%;
-      height:100%;
-      border:0;
-      background: transparent;
+    .row{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding: 10px 12px;
+    }
+    .row .k{ color: var(--muted); font-size: 13px; }
+    .row .v{ font-size: 13px; }
+
+    .footer{
+      margin-top: 14px;
+      color: var(--muted2);
+      font-size: 12px;
+      text-align:center;
+      padding: 8px 0 0;
     }
 
-    .hint{
+    /* Modal */
+    .modal{
+      position:fixed; inset:0;
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      background: rgba(0,0,0,.45);
+      z-index:50;
+      padding: 12px;
+    }
+    .modal.show{ display:flex; }
+    .sheet{
+      width:min(520px, 100%);
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      overflow:hidden;
+      transform: translateY(0);
+      animation: pop .18s ease-out;
+    }
+    @keyframes pop{
+      from{ transform: translateY(14px); opacity:.6; }
+      to{ transform: translateY(0); opacity:1; }
+    }
+    .sheet-h{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--stroke);
+    }
+    .sheet-h b{ font-size: 14px; }
+    .x{
+      border:1px solid var(--stroke);
+      background: transparent;
+      color: var(--text);
+      width: 38px; height: 38px;
+      border-radius: 14px;
+      cursor:pointer;
+    }
+    .sheet-b{
+      padding: 14px;
+    }
+    .sheet-b p{
+      margin: 0 0 12px;
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.5;
-      margin-top: 12px;
+      line-height: 1.4;
+    }
+    .go{
+      display:block;
+      width:100%;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 16px;
+      font-size: 14px;
+      text-align:center;
+      text-decoration:none;
+    }
+    .hint{
+      margin-top:10px;
+      font-size:12px;
+      color: var(--muted2);
+      text-align:center;
     }
 
-    /* Subtle 3D tilt effect */
-    .tilt{
-      will-change: transform;
-      transition: transform .15s ease;
+    /* Reduce motion preference */
+    @media (prefers-reduced-motion: reduce){
+      .blob{ animation:none; }
+      .shimmer{ animation:none; color: var(--text); background:none; }
+      .btn, .toggle{ transition:none; }
     }
   </style>
 </head>
 
-<body data-theme="dark">
-  <canvas id="bg"></canvas>
-  <div class="overlay"></div>
+<body>
+  <div class="stage" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
 
-  <div class="wrap">
-    <div class="card tilt" id="tiltCard">
-      <div class="topbar">
-        <div class="brand">
-          <span class="pill"><span class="dot"></span> Reniel Tabora</span>
-          <span class="pill" id="phTime">PH Time: --</span>
-        </div>
-
-        <div class="nav">
-          <button class="btn primary" data-target="home">Home</button>
-          <button class="btn" data-target="first">First Portfolio</button>
-          <button class="btn" data-target="autobot">Autobot</button>
-        </div>
-
-        <div class="right-tools">
-          <span class="pill" id="battery">Battery: --</span>
-          <div class="switch" id="themeToggle" title="Toggle Dark / Light">
-            <span id="themeLabel">Dark</span>
-            <span class="toggle"><span class="knob"></span></span>
-          </div>
-        </div>
+  <main class="wrap">
+    <div class="topbar" id="tiltTop">
+      <div class="brand">
+        <div class="dot"></div>
+        <span>Mobile 3D Portfolio</span>
       </div>
+      <button class="toggle" id="themeBtn">🌙 Dark</button>
+    </div>
 
-      <div class="content">
-        <div class="left">
-          <div class="pfp-wrap">
-            <img class="pfp" alt="Reniel Tabora profile picture"
-              src="https://img.sanishtech.com/u/26a2f7005696403d64c7854507e2a4c9.jpg" />
-            <div>
-              <h1 class="name" id="animatedName" aria-label="Reniel Tabora"></h1>
-              <p class="desc">App Modder 2022-2026 and Editor videos</p>
-            </div>
+    <section class="hero" id="tiltHero">
+      <div class="hero-inner">
+        <div class="avatar-row">
+          <div class="avatar">
+            <img
+              src="https://img.sanishtech.com/u/26a2f7005696403d64c7854507e2a4c9.jpg"
+              alt="Reniel Tabora"
+              loading="lazy"
+            />
           </div>
-
-          <div class="stats" aria-label="Stats">
-            <div class="stat">
-              <div class="label">Followers</div>
-              <div class="value">41k</div>
-            </div>
-            <div class="stat">
-              <div class="label">Likes</div>
-              <div class="value">392k</div>
-            </div>
-            <div class="stat">
-              <div class="label">Views</div>
-              <div class="value" id="views">0</div>
-            </div>
+          <div class="name-wrap">
+            <h1 class="name"><span class="shimmer" id="nameText">Reniel Tabora</span></h1>
+            <p class="desc">App Modder 2022–2026 and Editor videos</p>
           </div>
-
-          <div class="info-row">
-            <span class="pill" id="dateLine">Date: --</span>
-            <span class="pill" id="modeLine">Mode: Dark</span>
-          </div>
-
-          <p class="hint">
-            Tip: Click <b>First Portfolio</b> or <b>Autobot</b> to preview inside this page.
-            Views automatically increase when someone opens this site (per session).
-          </p>
         </div>
 
-        <div class="right">
-          <div class="panel-title">
-            <h2 id="panelTitle">Welcome</h2>
-            <span class="pill" id="panelUrl">—</span>
+        <!-- TOP BUTTONS (3 + More for Autobot) -->
+        <div class="quick">
+          <div class="btn primary" data-title="TikTok Downloader" data-url="https://snaptik.app/download-story-tiktok">
+            TikTok
           </div>
-
-          <div class="preview">
-            <iframe id="frame" title="Preview"></iframe>
+          <div class="btn primary" data-title="Facebook Downloader" data-url="https://fdown.net/">
+            Facebook
           </div>
-
-          <p class="hint" id="panelHint">
-            Select a project from the buttons above to load it here.
-          </p>
+          <div class="btn primary" data-title="Instagram Downloader" data-url="https://snapinsta.to/en2">
+            Instagram
+          </div>
+          <div class="btn" data-title="Autobot" data-url="https://auto-zvok.onrender.com/">
+            More
+          </div>
         </div>
+
+        <!-- Followers / Likes / Views -->
+        <div class="stats">
+          <div class="pill"><b>Followers</b><span>41k</span></div>
+          <div class="pill"><b>Likes</b><span>392k</span></div>
+          <div class="pill"><b>Views</b><span id="views">0</span></div>
+          <div class="pill"><b>Battery</b><span id="battery">--%</span></div>
+        </div>
+
+        <!-- Philippines Time / Date -->
+        <div class="mini">
+          <div class="row">
+            <div class="k">Philippines Time</div>
+            <div class="v" id="phTime">--:--</div>
+          </div>
+          <div class="row">
+            <div class="k">Philippines Date</div>
+            <div class="v" id="phDate">---</div>
+          </div>
+        </div>
+
+        <div class="footer">© <span id="year"></span> Reniel Tabora • Smooth 3D • Mobile-first</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+      <div class="sheet-h">
+        <b id="mTitle">Title</b>
+        <button class="x" id="closeBtn" aria-label="Close">✕</button>
+      </div>
+      <div class="sheet-b">
+        <p id="mDesc">Open the tool in a new tab.</p>
+        <a class="go" id="goLink" href="#" target="_blank" rel="noopener noreferrer">Open</a>
+        <div class="hint">Tip: If it doesn’t open, check your browser pop-up settings.</div>
       </div>
     </div>
   </div>
 
-  <!-- Three.js -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <script>
-    // --------- Animated name (letter-by-letter) ----------
-    const nameText = "Reniel Tabora";
-    const nameEl = document.getElementById("animatedName");
-    nameEl.innerHTML = "";
-    [...nameText].forEach((ch, i) => {
-      const span = document.createElement("span");
-      span.className = "char";
-      span.textContent = ch === " " ? "\u00A0" : ch;
-      span.style.animationDelay = (i * 0.04) + "s";
-      nameEl.appendChild(span);
+    // ---------- THEME ----------
+    const themeBtn = document.getElementById('themeBtn');
+    const savedTheme = localStorage.getItem('rt_theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+
+    function syncThemeButton(){
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      themeBtn.textContent = isLight ? '☀️ Light' : '🌙 Dark';
+    }
+    syncThemeButton();
+
+    themeBtn.addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'light' ? 'dark' : 'light';
+      if (next === 'dark') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('rt_theme', next);
+      syncThemeButton();
     });
 
-    // --------- PH date/time (Asia/Manila) ----------
-    const phTimeEl = document.getElementById("phTime");
-    const dateLineEl = document.getElementById("dateLine");
-    function updatePHClock(){
-      const now = new Date();
-      const timeStr = new Intl.DateTimeFormat("en-PH", {
-        timeZone: "Asia/Manila",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-      }).format(now);
+    // ---------- VIEWS COUNTER (per device/browser) ----------
+    const viewsEl = document.getElementById('views');
+    const key = 'rt_views';
+    const current = Number(localStorage.getItem(key) || '0') + 1;
+    localStorage.setItem(key, String(current));
+    viewsEl.textContent = current.toLocaleString();
 
-      const dateStr = new Intl.DateTimeFormat("en-PH", {
-        timeZone: "Asia/Manila",
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "2-digit"
-      }).format(now);
-
-      phTimeEl.textContent = "PH Time: " + timeStr;
-      dateLineEl.textContent = "Date: " + dateStr;
-    }
-    updatePHClock();
-    setInterval(updatePHClock, 1000);
-
-    // --------- Views counter (per session, no backend) ----------
-    const viewsEl = document.getElementById("views");
-    const KEY_TOTAL = "rt_total_views";
-    const KEY_SESSION = "rt_session_counted";
-    const total = Number(localStorage.getItem(KEY_TOTAL) || "0");
-    const counted = sessionStorage.getItem(KEY_SESSION);
-
-    if(!counted){
-      const newTotal = total + 1;
-      localStorage.setItem(KEY_TOTAL, String(newTotal));
-      sessionStorage.setItem(KEY_SESSION, "1");
-      viewsEl.textContent = String(newTotal);
-    } else {
-      viewsEl.textContent = String(total);
-    }
-
-    // --------- Battery percentage (with fallback) ----------
-    const batteryEl = document.getElementById("battery");
+    // ---------- BATTERY ----------
+    const batteryEl = document.getElementById('battery');
     async function initBattery(){
       try{
-        if(!navigator.getBattery){
-          batteryEl.textContent = "Battery: N/A";
+        if (!navigator.getBattery) {
+          batteryEl.textContent = 'N/A';
           return;
         }
         const bat = await navigator.getBattery();
-        const set = () => {
-          const pct = Math.round((bat.level || 0) * 100);
-          batteryEl.textContent = "Battery: " + pct + "%";
+        const update = () => {
+          batteryEl.textContent = Math.round(bat.level * 100) + '%';
         };
-        set();
-        bat.addEventListener("levelchange", set);
-      } catch(e){
-        batteryEl.textContent = "Battery: N/A";
+        update();
+        bat.addEventListener('levelchange', update);
+        bat.addEventListener('chargingchange', update);
+      }catch(e){
+        batteryEl.textContent = 'N/A';
       }
     }
     initBattery();
 
-    // --------- Dark / Light mode ----------
-    const themeToggle = document.getElementById("themeToggle");
-    const themeLabel = document.getElementById("themeLabel");
-    const modeLine = document.getElementById("modeLine");
+    // ---------- PH TIME/DATE ----------
+    const phTime = document.getElementById('phTime');
+    const phDate = document.getElementById('phDate');
 
-    const THEME_KEY = "rt_theme";
-    function applyTheme(theme){
-      document.body.setAttribute("data-theme", theme);
-      themeLabel.textContent = theme === "light" ? "Light" : "Dark";
-      modeLine.textContent = "Mode: " + (theme === "light" ? "Light" : "Dark");
-      localStorage.setItem(THEME_KEY, theme);
+    function tickPH(){
+      const now = new Date();
+      const timeFmt = new Intl.DateTimeFormat('en-PH', {
+        timeZone: 'Asia/Manila',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      const dateFmt = new Intl.DateTimeFormat('en-PH', {
+        timeZone: 'Asia/Manila',
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit'
+      });
+      phTime.textContent = timeFmt.format(now);
+      phDate.textContent = dateFmt.format(now);
     }
-    applyTheme(localStorage.getItem(THEME_KEY) || "dark");
+    tickPH();
+    setInterval(tickPH, 1000);
 
-    themeToggle.addEventListener("click", () => {
-      const current = document.body.getAttribute("data-theme");
-      applyTheme(current === "dark" ? "light" : "dark");
-    });
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    // --------- Top buttons + iframe preview ----------
-    const frame = document.getElementById("frame");
-    const panelTitle = document.getElementById("panelTitle");
-    const panelUrl = document.getElementById("panelUrl");
-    const panelHint = document.getElementById("panelHint");
+    // ---------- MODAL LINKS ----------
+    const modal = document.getElementById('modal');
+    const mTitle = document.getElementById('mTitle');
+    const mDesc = document.getElementById('mDesc');
+    const goLink = document.getElementById('goLink');
+    const closeBtn = document.getElementById('closeBtn');
 
-    const targets = {
-      home: { title: "Welcome", url: "", hint: "Select a project from the buttons above to load it here." },
-      first: { title: "First Portfolio", url: "https://visionary-naiad-bb54e3.netlify.app/", hint: "Preview loaded. If it blocks iframe, click Open in new tab." },
-      autobot: { title: "Autobot", url: "https://auto-zvok.onrender.com/", hint: "Preview loaded. If it blocks iframe, click Open in new tab." }
-    };
-
-    function loadTarget(key){
-      const t = targets[key];
-      panelTitle.textContent = t.title;
-      panelUrl.textContent = t.url || "—";
-      panelHint.textContent = t.hint;
-
-      if(!t.url){
-        frame.srcdoc = `
-          <div style="height:100%;display:flex;align-items:center;justify-content:center;
-                      font-family:system-ui;color:#bbb;background:transparent;">
-            <div style="text-align:center;max-width:520px;padding:20px;">
-              <h2 style="margin:0 0 10px;color:#ddd;">Reniel Tabora</h2>
-              <p style="margin:0;line-height:1.5;">
-                Click <b>First Portfolio</b> or <b>Autobot</b> to preview here.
-              </p>
-              <p style="margin-top:10px;opacity:.85;">App Modder 2022-2026 • Video Editor</p>
-            </div>
-          </div>`;
-        return;
-      }
-
-      // Try iframe. If site blocks embedding, user can still open in new tab.
-      frame.removeAttribute("srcdoc");
-      frame.src = t.url;
-
-      // Add "open in new tab" automatically if embedding is blocked
-      setTimeout(() => {
-        panelHint.innerHTML = `${t.hint} <a href="${t.url}" target="_blank" rel="noopener" style="color:inherit;font-weight:800;text-decoration:underline;">Open in new tab</a>`;
-      }, 800);
+    function openModal(title, url){
+      mTitle.textContent = title;
+      mDesc.textContent = 'Tap "Open" to launch the tool in a new tab.';
+      goLink.href = url;
+      goLink.textContent = 'Open ' + title;
+      modal.classList.add('show');
     }
+    function closeModal(){ modal.classList.remove('show'); }
 
-    document.querySelectorAll("[data-target]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        // UI active state
-        document.querySelectorAll(".btn").forEach(b=>b.classList.remove("primary"));
-        btn.classList.add("primary");
-        loadTarget(btn.dataset.target);
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const title = btn.getAttribute('data-title');
+        const url = btn.getAttribute('data-url');
+        openModal(title, url);
       });
     });
 
-    loadTarget("home");
-
-    // --------- 3D tilt card (mouse / touch) ----------
-    const tiltCard = document.getElementById("tiltCard");
-    function setTilt(clientX, clientY){
-      const rect = tiltCard.getBoundingClientRect();
-      const x = (clientX - rect.left) / rect.width - 0.5;
-      const y = (clientY - rect.top) / rect.height - 0.5;
-      const rx = (-y * 7);
-      const ry = (x * 10);
-      tiltCard.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
-    }
-    function resetTilt(){ tiltCard.style.transform = `rotateX(0deg) rotateY(0deg)`; }
-
-    window.addEventListener("mousemove", (e)=> setTilt(e.clientX, e.clientY), {passive:true});
-    window.addEventListener("mouseleave", resetTilt);
-    window.addEventListener("touchmove", (e)=>{
-      if(e.touches && e.touches[0]) setTilt(e.touches[0].clientX, e.touches[0].clientY);
-    }, {passive:true});
-    window.addEventListener("touchend", resetTilt);
-
-    // --------- Three.js 3D background (premium floating particles) ----------
-    const canvas = document.getElementById("bg");
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-    camera.position.z = 40;
-
-    function resize(){
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    }
-    window.addEventListener("resize", resize);
-    resize();
-
-    // Particles
-    const count = 1500;
-    const geo = new THREE.BufferGeometry();
-    const positions = new Float32Array(count * 3);
-    const speeds = new Float32Array(count);
-
-    for(let i=0;i<count;i++){
-      const i3 = i*3;
-      positions[i3+0] = (Math.random()-0.5) * 140;
-      positions[i3+1] = (Math.random()-0.5) * 90;
-      positions[i3+2] = (Math.random()-0.5) * 120;
-      speeds[i] = 0.2 + Math.random() * 0.8;
-    }
-    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-
-    const mat = new THREE.PointsMaterial({
-      size: 0.22,
-      transparent: true,
-      opacity: 0.85,
-      depthWrite: false
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
     });
 
-    const points = new THREE.Points(geo, mat);
-    scene.add(points);
+    // ---------- 3D PARALLAX (smooth, lightweight) ----------
+    const tiltHero = document.getElementById('tiltHero');
+    const tiltTop = document.getElementById('tiltTop');
 
-    // Subtle rings
-    const ringGeo = new THREE.TorusGeometry(18, 0.08, 12, 220);
-    const ringMat = new THREE.MeshBasicMaterial({ transparent:true, opacity:.25 });
-    const ring1 = new THREE.Mesh(ringGeo, ringMat);
-    ring1.rotation.x = 0.7
-@keyframes bg{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
+    let targetX = 0, targetY = 0;
+    let curX = 0, curY = 0;
 
-/* floating lights */
-.lightfx{
-  position:absolute;
-  width:340px;height:340px;
-  background:radial-gradient(circle,rgba(0,255,255,.45),transparent 70%);
-  filter:blur(70px);
-  animation:float 8s infinite alternate;
-  left:-60px; top:12%;
-  opacity:.9;
-}
-.lightfx.two{
-  background:radial-gradient(circle,rgba(255,0,255,.38),transparent 70%);
-  bottom:6%;right:-70px;
-  animation-delay:3s;
-}
-.lightfx.three{
-  width:260px;height:260px;
-  background:radial-gradient(circle,rgba(67,233,123,.35),transparent 70%);
-  top:-40px; right:12%;
-  animation-delay:1.3s;
-  filter:blur(65px);
-}
-@keyframes float{to{transform:translateY(-55px) translateX(15px)}}
+    function setTargetsFromPoint(px, py){
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      targetX = (px - cx) / cx;   // -1..1
+      targetY = (py - cy) / cy;   // -1..1
+    }
 
-/* subtle 3D particles */
-.particles{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(255,255,255,.10) 0 2px, transparent 3px),
-    radial-gradient(circle at 80% 70%, rgba(255,255,255,.08) 0 2px, transparent 3px),
-    radial-gradient(circle at 60% 20%, rgba(255,255,255,.06) 0 2px, transparent 3px),
-    radial-gradient(circle at 30% 80%, rgba(255,255,255,.07) 0 2px, transparent 3px);
-  animation: drift 10s linear infinite;
-  opacity:.7;
-}
-@keyframes drift{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-18px)}
-  100%{transform:translateY(0)}
-}
+    window.addEventListener('pointermove', (e) => {
+      setTargetsFromPoint(e.clientX, e.clientY);
+    }, { passive:true });
 
-/* toggle */
-.toggle{
-  position:absolute;
-  top:20px; right:20px;
-  padding:8px 14px;
-  border-radius:20px;
-  background:rgba(255,255,255,.25);
-  cursor:pointer;
-  font-size:13px;
-  z-index:30;
-  user-select:none;
-}
+    // Mobile tilt support (optional, graceful)
+    window.addEventListener('deviceorientation', (e) => {
+      if (e.beta == null || e.gamma == null) return;
+      const gx = Math.max(-30, Math.min(30, e.gamma)) / 30; // -1..1
+      const by = Math.max(-30, Math.min(30, e.beta)) / 30;  // -1..1
+      targetX = gx;
+      targetY = by;
+    }, { passive:true });
 
-/* hamburger */
-.hamburger{
-  position:absolute;
-  top:22px;
-  left:22px;
-  width:32px;
-  height:24px;
-  cursor:pointer;
-  z-index:40;
-  user-select:none;
-}
-.hamburger span{
-  display:block;
-  height:4px;
-  width:100%;
-  background:linear-gradient(90deg,#00f2fe,#4facfe,#43e97b);
-  margin:4px 0;
-  border-radius:4px;
-  box-shadow:0 0 12px rgba(0,255,255,.65);
-  transition:.25s ease;
-}
-.hamburger.active span:nth-child(1){transform:translateY(8px) rotate(45deg)}
-.hamburger.active span:nth-child(2){opacity:0}
-.hamburger.active span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+    function animate(){
+      // smooth interpolation
+      curX += (targetX - curX) * 0.06;
+      curY += (targetY - curY) * 0.06;
 
-/* sidebar overlay */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.45);
-  backdrop-filter:blur(3px);
-  display:none;
-  z-index:25;
-}
-.overlay.active{display:block}
+      const rx = (-curY * 6).toFixed(3);
+      const ry = (curX * 8).toFixed(3);
+      const rx2 = (-curY * 3).toFixed(3);
+      const ry2 = (curX * 4).toFixed(3);
 
-/* sidebar */
-.side-menu{
-  position:fixed;
-  top:0;
-  left:-340px;
-  width:320px;
-  height:100vh;
-  padding:22px 18px;
-  background:var(--glass);
-  backdrop-filter:blur(22px);
-  box-shadow:22px 0 70px rgba(0,0,0,.7);
-  transition:.45s cubic-bezier(.2,.9,.2,1);
-  z-index:35;
-  border-radius:0 28px 28px 0;
-  overflow:hidden;
-}
+      tiltHero.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+      tiltTop.style.transform  = `rotateX(${rx2}deg) rotateY(${ry2}deg) translateZ(0)`;
 
-.side-menu::before{
-  content:'';
-  position:absolute;
-  inset:-3px;
-  border-radius:0 30px 30px 0;
-  background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
-  background-size:400%;
-  filter:blur(10px);
-  z-index:-1;
-  animation:rainbow 6s linear infinite;
-  opacity:.7;
-}
-@keyframes rainbow{
-  0%{background-position:0%}
-  100%{background-position:400%}
-}
+      requestAnimationFrame(animate);
+    }
+    animate();
 
-.side-menu.active{
-  left:0;
-}
-
-.menu-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:10px;
-}
-.menu-top h3{
-  font-size:18px;
-  letter-spacing:.6px;
-}
-.menu-close{
-  cursor:pointer;
-  padding:8px 10px;
-  border-radius:14px;
-  background:rgba(255,255,255,.18);
-  font-size:13px;
-}
-
-.menu-note{
-  font-size:12px;
-  opacity:.85;
-  margin-bottom:14px;
-  line-height:1.5;
-}
-
-.tool-list{
-  margin-top:8px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.tool-list a{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:12px 12px;
-  border-radius:16px;
-  text-decoration:none;
-  color:var(--text);
-  font-size:13px;
-  background:var(--glass2);
-  transition:.25s ease;
-  border:1px solid rgba(255,255,255,.10);
-}
-.tool-list a span{
-  opacity:.9;
-  font-size:12px;
-}
-.tool-list a:hover{
-  transform:translateX(6px) scale(1.02);
-  background:linear-gradient(90deg,#00f2fe,#4facfe,#43e97b);
-  box-shadow:0 0 22px rgba(0,255,255,.55);
-}
-
-/* rainbow border wrapper */
-.wrapper{
-  position:relative;
-  border-radius:28px;
-  z-index:10;
-}
-.wrapper::before{
-  content:'';
-  position:absolute;
-  inset:-4px;
-  border-radius:30px;
-  background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
-  background-size:400%;
-  filter:blur(8px);
-  z-index:-1;
-  animation:rainbow 5s linear infinite;
-}
-
-.container{
-  width:390px;
-  padding:28px;
-  border-radius:26px;
-  background:var(--card);
-  backdrop-filter:blur(18px);
-  box-shadow:0 30px 70px rgba(0,0,0,.6);
-  transform:perspective(1000px) rotateX(6deg);
-}
-
-/* profile */
-.profile-img{
-  width:130px;height:130px;
-  border-radius:50%;
-  display:block;
-  margin:0 auto;
-  border:4px solid rgba(255,255,255,.45);
-  animation:avatarFloat 3.5s ease-in-out infinite;
-}
-@keyframes avatarFloat{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
-  100%{transform:translateY(0)}
-}
-
-/* typing name */
-.name{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:6px;
-  margin-top:16px;
-}
-#typedName{
-  font-size:23px;
-  font-weight:600;
-  border-right:2px solid currentColor;
-  padding-right:4px;
-  animation:blink 1s infinite;
-  min-height:30px;
-}
-@keyframes blink{
-  0%,50%,100%{border-color:transparent}
-  25%,75%{border-color:currentColor}
-}
-
-.verify{
-  width:20px;height:20px;
-  border-radius:50%;
-  background:#1da1f2;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  box-shadow:0 0 10px #1da1f2;
-  font-size:13px;
-}
-
-.info{text-align:center;font-size:14px;opacity:.9}
-
-.description{
-  margin-top:14px;
-  padding:12px;
-  text-align:center;
-  font-size:14px;
-  border-radius:14px;
-  background:rgba(255,255,255,.14);
-}
-
-.time{text-align:center;margin:18px 0;font-weight:600}
-
-.btn{
-  margin:10px auto 0;
-  display:block;
-  padding:10px 22px;
-  border-radius:20px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
-  background:linear-gradient(90deg,#00f2fe,#4facfe,#43e97b);
-  color:#000;
-}
-
-/* platforms */
-.platforms{
-  display:flex;
-  justify-content:space-around;
-  margin-top:18px;
-  font-size:13px;
-}
-.platforms a{
-  text-decoration:none;
-  color:var(--text);
-  padding:8px 12px;
-  border-radius:12px;
-  background:rgba(255,255,255,.22);
-}
-
-/* modal */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:50;
-}
-.modal-content{
-  width:320px;
-  padding:20px;
-  border-radius:22px;
-  background:#111;
-  color:#fff;
-  position:relative;
-}
-.modal-content::before{
-  content:'';
-  position:absolute;
-  inset:-3px;
-  border-radius:24px;
-  background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
-  background-size:400%;
-  filter:blur(6px);
-  z-index:-1;
-  animation:rainbow 4s linear infinite;
-}
-.close{
-  position:absolute;
-  top:10px;right:14px;
-  cursor:pointer;
-}
-.skill{margin-bottom:10px}
-.bar{height:8px;border-radius:10px;background:#333}
-.fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#ff00cc,#00ff99)}
-
-.social a{
-  display:block;
-  margin:8px 0;
-  padding:10px;
-  border-radius:12px;
-  text-align:center;
-  color:#fff;
-  text-decoration:none;
-  background:rgba(255,255,255,.15);
-}
-
-/* small screens */
-@media(max-width:420px){
-  .container{width:92vw}
-}
-</style>
-</head>
-
-<body>
-<div class="particles"></div>
-<div class="lightfx"></div>
-<div class="lightfx two"></div>
-<div class="lightfx three"></div>
-
-<div class="toggle" onclick="toggleMode()">🌗 Mode</div>
-
-<!-- hamburger + overlay + sidebar -->
-<div class="hamburger" id="hamburger" onclick="toggleMenu()">
-  <span></span><span></span><span></span>
-</div>
-<div class="overlay" id="overlay" onclick="closeMenu()"></div>
-
-<div class="side-menu" id="sideMenu">
-  <div class="menu-top">
-    <h3>⚡ Tools Menu</h3>
-    <div class="menu-close" onclick="closeMenu()">Close ✕</div>
-  </div>
-
-  <div class="menu-note">
-    High-quality tools shortcuts. Click any tool to open in a new tab.
-  </div>
-
-  <div class="tool-list">
-    <a href="https://mysteriousq-autoshare.onrender.com/" target="_blank">AUTO SHARE <span>↗</span></a>
-    <a href="https://mysteriousq-sms-bomber.onrender.com/" target="_blank">SMS BOMBER <span>↗</span></a>
-    <a href="https://mysteriousq-tempmail.onrender.com/" target="_blank">TEMPMAIL <span>↗</span></a>
-    <a href="https://mysteriousq-website-screenshot.onrender.com/" target="_blank">WEBSITE SCREENSHOT <span>↗</span></a>
-    <a href="https://mysteriousq-spotifydl.onrender.com/" target="_blank">SPOTIFY DOWNLOADER <span>↗</span></a>
-    <a href="https://mysteriousq-ytdl.onrender.com/" target="_blank">YOUTUBE DOWNLOADER <span>↗</span></a>
-    <a href="https://mysteriousq-fbdl.onrender.com/" target="_blank">FACEBOOK DOWNLOADER <span>↗</span></a>
-    <a href="https://mysteriousq-tiktokdl.onrender.com/" target="_blank">TIKTOK DOWNLOADER <span>↗</span></a>
-  </div>
-</div>
-
-<div class="wrapper">
-  <div class="container">
-
-    <img src="https://img.sanishtech.com/u/5eef3fa4669bfe5a6243300feb999e05.jpg" class="profile-img" alt="Profile">
-
-    <div class="name">
-      <div id="typedName"></div>
-      <div class="verify">✓</div>
-    </div>
-
-    <p class="info">19 years old • Philippines</p>
-
-    <div class="description">
-      Programmer & Modder (2022–2026)<br>
-      🎬 Video Editor
-    </div>
-
-    <div class="time" id="phTime"></div>
-
-    <button class="btn" onclick="openSkills()">View Skills</button>
-    <button class="btn" onclick="openSocial()">View Social</button>
-
-    <div class="platforms">
-      <a href="https://github.com" target="_blank">GitHub</a>
-      <a href="https://vercel.com" target="_blank">Vercel</a>
-      <a href="https://render.com" target="_blank">Render</a>
-      <a href="https://www.netlify.com" target="_blank">Netlify</a>
-    </div>
-
-  </div>
-</div>
-
-<!-- SKILLS MODAL -->
-<div class="modal" id="skillsModal">
-  <div class="modal-content">
-    <div class="close" onclick="closeSkills()">✕</div>
-    <div class="skill">HTML 90%<div class="bar"><div class="fill" style="width:90%"></div></div></div>
-    <div class="skill">CSS 85%<div class="bar"><div class="fill" style="width:85%"></div></div></div>
-    <div class="skill">Python 75%<div class="bar"><div class="fill" style="width:75%"></div></div></div>
-    <div class="skill">Java 70%<div class="bar"><div class="fill" style="width:70%"></div></div></div>
-  </div>
-</div>
-
-<!-- SOCIAL MODAL -->
-<div class="modal" id="socialModal">
-  <div class="modal-content social">
-    <div class="close" onclick="closeSocial()">✕</div>
-    <a href="https://www.facebook.com/rrreeeennnn" target="_blank">Facebook</a>
-    <a href="https://pin.it/2WhNa7xek" target="_blank">Pinterest</a>
-    <a href="https://t.me/ashley921" target="_blank">Telegram</a>
-  </div>
-</div>
-
-<script>
-/* PH time */
-function updatePHTime(){
-  document.getElementById('phTime').innerHTML =
-    new Date().toLocaleString('en-US',{timeZone:'Asia/Manila'});
-}
-setInterval(updatePHTime,1000); updatePHTime();
-
-/* light mode toggle */
-function toggleMode(){ document.body.classList.toggle('light'); }
-
-/* modals */
-function openSkills(){ document.getElementById('skillsModal').style.display='flex'; }
-function closeSkills(){ document.getElementById('skillsModal').style.display='none'; }
-
-function openSocial(){ document.getElementById('socialModal').style.display='flex'; }
-function closeSocial(){ document.getElementById('socialModal').style.display='none'; }
-
-/* typing name */
-const text="Reniel Tabora";
-let i=0;
-(function type(){
-  const el=document.getElementById('typedName');
-  if(i<text.length){
-    el.innerHTML+=text[i++];
-    setTimeout(type,120);
-  }
-})();
-
-/* sidebar menu */
-function toggleMenu(){
-  const menu=document.getElementById('sideMenu');
-  const overlay=document.getElementById('overlay');
-  const ham=document.getElementById('hamburger');
-  menu.classList.toggle('active');
-  overlay.classList.toggle('active');
-  ham.classList.toggle('active');
-}
-function closeMenu(){
-  document.getElementById('sideMenu').classList.remove('active');
-  document.getElementById('overlay').classList.remove('active');
-  document.getElementById('hamburger').classList.remove('active');
-}
-
-/* close menu with ESC */
-document.addEventListener('keydown', (e)=>{
-  if(e.key === 'Escape') closeMenu();
-});
-</script>
+    // ---------- Name micro animation (type-in once) ----------
+    const nameEl = document.getElementById('nameText');
+    const full = nameEl.textContent.trim();
+    nameEl.textContent = '';
+    let i = 0;
+    const typeTimer = setInterval(() => {
+      i++;
+      nameEl.textContent = full.slice(0, i);
+      if (i >= full.length) clearInterval(typeTimer);
+    }, 55);
+  </script>
 </body>
-</html>
+                               </html>
