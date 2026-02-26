@@ -1,40 +1,245 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Reniel Tabora • Portfolio</title>
-  <meta name="description" content="Reniel Tabora — App Modder 2022-2026 and Editor videos" />
-  <style>
-    :root{
-      --bg: #070A12;
-      --card: rgba(255,255,255,.08);
-      --card2: rgba(255,255,255,.06);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-      --stroke: rgba(255,255,255,.16);
-      --accent: rgba(140, 160, 255, 1);
-      --shadow: 0 20px 80px rgba(0,0,0,.45);
-      --blur: blur(16px);
-      --radius: 22px;
-    }
-    [data-theme="light"]{
-      --bg: #F6F7FB;
-      --card: rgba(10,18,40,.06);
-      --card2: rgba(10,18,40,.045);
-      --text: rgba(10,18,40,.92);
-      --muted: rgba(10,18,40,.68);
-      --stroke: rgba(10,18,40,.14);
-      --accent: rgba(70, 95, 255, 1);
-      --shadow: 0 18px 70px rgba(10,18,40,.18);
-      --blur: blur(14px);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reniel Tabora</title>
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+<style>
+:root{
+  --bg:#0b0f1a;
+  --card:#141a2b;
+  --text:#ffffff;
+  --muted:#b5b9d6;
+  --accent:#6f7dff;
+}
+
+[data-theme="light"]{
+  --bg:#f4f6ff;
+  --card:#ffffff;
+  --text:#0b0f1a;
+  --muted:#555;
+  --accent:#4a5bff;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  background:linear-gradient(180deg,#0b0f1a,#121a35);
+  color:var(--text);
+}
+
+.container{
+  max-width:420px;
+  margin:auto;
+  padding:16px;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:20px 16px;
+  background:var(--card);
+  border-radius:22px;
+  box-shadow:0 20px 50px rgba(0,0,0,.4);
+  transform:perspective(800px) rotateX(4deg);
+}
+
+.profile{
+  width:90px;
+  height:90px;
+  border-radius:22px;
+  object-fit:cover;
+  margin-bottom:10px;
+}
+
+.name span{
+  display:inline-block;
+  font-size:28px;
+  font-weight:800;
+  opacity:0;
+  transform:translateY(12px);
+  animation:pop .6s forwards;
+}
+.name span:nth-child(n){animation-delay:calc(var(--i)*.05s)}
+
+@keyframes pop{
+  to{opacity:1;transform:translateY(0)}
+}
+
+.desc{
+  font-size:14px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+/* STATS */
+.stats{
+  display:flex;
+  justify-content:space-between;
+  margin-top:16px;
+}
+.stat{
+  flex:1;
+  margin:0 4px;
+  background:#0f1530;
+  border-radius:16px;
+  padding:10px;
+}
+.stat b{font-size:16px}
+.stat small{color:var(--muted)}
+
+/* BUTTONS */
+.buttons{
+  display:flex;
+  gap:10px;
+  margin:16px 0;
+}
+button{
+  flex:1;
+  padding:12px;
+  border-radius:16px;
+  border:none;
+  background:var(--accent);
+  color:white;
+  font-weight:700;
+  font-size:14px;
+}
+button.secondary{
+  background:#1c244d;
+}
+
+/* INFO */
+.info{
+  background:var(--card);
+  border-radius:18px;
+  padding:12px;
+  font-size:13px;
+  margin-bottom:12px;
+}
+.info span{
+  display:block;
+  margin:4px 0;
+}
+
+/* IFRAME PREVIEW */
+.preview{
+  height:420px;
+  border-radius:18px;
+  overflow:hidden;
+  background:#000;
+}
+iframe{
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+/* TOGGLE */
+.toggle{
+  text-align:center;
+  margin-top:10px;
+}
+.toggle button{
+  background:none;
+  border:1px solid var(--accent);
+  color:var(--accent);
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img class="profile" src="https://img.sanishtech.com/u/26a2f7005696403d64c7854507e2a4c9.jpg">
+
+    <div class="name" id="name"></div>
+    <div class="desc">App Modder 2022–2026 • Editor videos</div>
+
+    <div class="stats">
+      <div class="stat"><b>41k</b><br><small>Followers</small></div>
+      <div class="stat"><b>392k</b><br><small>Likes</small></div>
+      <div class="stat"><b id="views">0</b><br><small>Views</small></div>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="buttons">
+    <button onclick="loadSite('home')">Home</button>
+    <button class="secondary" onclick="loadSite('first')">Portfolio</button>
+    <button class="secondary" onclick="loadSite('auto')">Autobot</button>
+  </div>
+
+  <!-- INFO -->
+  <div class="info">
+    <span id="time">PH Time: --</span>
+    <span id="battery">Battery: --</span>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview">
+    <iframe id="frame"></iframe>
+  </div>
+
+  <!-- THEME -->
+  <div class="toggle">
+    <button onclick="toggleTheme()">Dark / Light</button>
+  </div>
+
+</div>
+
+<script>
+/* NAME ANIMATION */
+const name = "Reniel Tabora";
+const nameEl = document.getElementById("name");
+[...name].forEach((c,i)=>{
+  const s=document.createElement("span");
+  s.textContent=c===" "?" ":c;
+  s.style.setProperty("--i",i);
+  nameEl.appendChild(s);
+});
+
+/* VIEWS */
+let views=localStorage.getItem("views")||0;
+views++;
+localStorage.setItem("views",views);
+document.getElementById("views").textContent=views;
+
+/* TIME PH */
+setInterval(()=>{
+  const now=new Date().toLocaleString("en-PH",{timeZone:"Asia/Manila"});
+  document.getElementById("time").textContent="PH Time: "+now;
+},1000);
+
+/* BATTERY */
+if(navigator.getBattery){
+  navigator.getBattery().then(b=>{
+    document.getElementById("battery").textContent=
+      "Battery: "+Math.round(b.level*100)+"%";
+  });
+}else{
+  document.getElementById("battery").textContent="Battery: N/A";
+}
+
+/* LOAD SITES */
+function loadSite(t){
+  const f=document.getElementById("frame");
+  if(t==="home") f.srcdoc="<h2 style='color:white;text-align:center;padding-top:40px'>Welcome 👋</h2>";
+  if(t==="first") f.src="https://visionary-naiad-bb54e3.netlify.app/";
+  if(t==="auto") f.src="https://auto-zvok.onrender.com/";
+}
+
+/* THEME */
+function toggleTheme(){
+  document.body.dataset.theme=
+    document.body.dataset.theme==="light"?"dark":"light";
+}
+</script>
+</body>
+</html>      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color: var(--text);
       background: var(--bg);
       overflow-x:hidden;
