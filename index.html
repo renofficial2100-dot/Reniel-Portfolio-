@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Reniel Tabora — Portfolio</title>
+  <title>Reniel Tabora — 3D Portfolio</title>
   <meta name="theme-color" content="#0b1220" />
   <style>
     :root{
@@ -15,612 +15,666 @@
       --muted: rgba(255,255,255,.72);
       --muted2: rgba(255,255,255,.55);
       --stroke: rgba(255,255,255,.14);
-      --shadow: 0 18px 45px rgba(0,0,0,.45);
+      --shadow: 0 18px 55px rgba(0,0,0,.48);
       --radius: 22px;
-      --accent: 255,255,255;
-      --glow: 0 0 18px rgba(255,255,255,.12);
-    }
-    [data-theme="light"]{
-      --bg0:#f7f8fb;
-      --bg1:#ffffff;
-      --card: rgba(0,0,0,.04);
-      --card2: rgba(0,0,0,.06);
-      --text: rgba(0,0,0,.88);
-      --muted: rgba(0,0,0,.64);
-      --muted2: rgba(0,0,0,.48);
-      --stroke: rgba(0,0,0,.10);
-      --shadow: 0 18px 45px rgba(0,0,0,.12);
-      --glow: 0 0 18px rgba(0,0,0,.08);
+
+      /* dynamic accent (changes via JS) */
+      --hue: 210;
+      --accent: hsl(var(--hue) 92% 62%);
+      --accent2: hsl(calc(var(--hue) + 40) 92% 62%);
+      --accent3: hsl(calc(var(--hue) + 80) 92% 62%);
+      --glow: 0 0 22px rgba(255,255,255,.22), 0 0 45px color-mix(in srgb, var(--accent), transparent 65%);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    [data-theme="light"]{
+      --bg0:#f6f8ff;
+      --bg1:#e9eeff;
+      --card: rgba(0,0,0,.06);
+      --card2: rgba(0,0,0,.09);
+      --text: rgba(0,0,0,.88);
+      --muted: rgba(0,0,0,.65);
+      --muted2: rgba(0,0,0,.5);
+      --stroke: rgba(0,0,0,.12);
+      --shadow: 0 18px 55px rgba(0,0,0,.20);
+      --glow: 0 0 22px rgba(0,0,0,.10), 0 0 45px color-mix(in srgb, var(--accent), transparent 70%);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(255,255,255,.08), transparent 60%),
-                  radial-gradient(900px 700px at 90% 30%, rgba(255,255,255,.06), transparent 60%),
-                  linear-gradient(180deg, var(--bg0), var(--bg1));
+      color: var(--text);
+      background:
+        radial-gradient(1200px 900px at 15% 10%, color-mix(in srgb, var(--accent), transparent 85%), transparent 60%),
+        radial-gradient(900px 700px at 85% 25%, color-mix(in srgb, var(--accent2), transparent 85%), transparent 60%),
+        radial-gradient(800px 600px at 55% 90%, color-mix(in srgb, var(--accent3), transparent 86%), transparent 58%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
     }
 
-    /* 3D ambient blobs (lightweight) */
-    .stage{
+    /* subtle animated noise layer */
+    body::before{
+      content:"";
       position:fixed; inset:0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,.06), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,.05), transparent 35%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 6px);
+      mix-blend-mode: overlay;
+      opacity:.25;
       pointer-events:none;
-      perspective: 900px;
-      transform-style: preserve-3d;
-      z-index:0;
+      filter: blur(.2px);
+      animation: drift 14s linear infinite;
     }
-    .blob{
-      position:absolute;
-      width: 320px; height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), rgba(255,255,255,0) 65%);
-      filter: blur(2px);
-      opacity:.7;
-      transform: translate3d(0,0,0);
-      animation: float 7.5s ease-in-out infinite;
-      will-change: transform;
-    }
-    .blob.b1{ left:-120px; top:80px; animation-duration:8.2s; }
-    .blob.b2{ right:-140px; top:160px; width:380px; height:380px; opacity:.55; animation-duration:9.4s; }
-    .blob.b3{ left:20%; bottom:-180px; width:420px; height:420px; opacity:.45; animation-duration:10.3s; }
-
-    @keyframes float{
-      0%,100%{ transform: translate3d(0,0,0) rotateZ(0deg); }
-      50%{ transform: translate3d(0,-16px,50px) rotateZ(8deg); }
+    @keyframes drift{
+      0%{ transform: translate3d(0,0,0); }
+      50%{ transform: translate3d(-12px, 10px, 0); }
+      100%{ transform: translate3d(0,0,0); }
     }
 
-    /* Content */
     .wrap{
-      position:relative;
-      z-index:1;
-      max-width: 480px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 18px 14px 26px;
-      padding-top: max(18px, env(safe-area-inset-top));
-      padding-bottom: max(26px, env(safe-area-inset-bottom));
+      padding: 18px 14px 28px;
+      padding-bottom: calc(28px + env(safe-area-inset-bottom));
     }
 
+    /* top bar */
     .topbar{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      padding: 10px 10px;
+      margin-bottom: 14px;
+    }
+
+    .pill{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: var(--card);
       border: 1px solid var(--stroke);
-      background: linear-gradient(180deg, var(--card2), var(--card));
-      border-radius: var(--radius);
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
-      transform-style: preserve-3d;
     }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      min-width: 0;
+
+    .status{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+      font-size: 12px;
+      color: var(--muted);
+      line-height:1.2;
     }
     .dot{
-      width:10px;height:10px;border-radius:50%;
-      background: rgba(var(--accent), .85);
+      width:8px; height:8px; border-radius:999px;
+      background: var(--accent);
       box-shadow: var(--glow);
-      flex:0 0 auto;
+      animation: pulse 1.6s ease-in-out infinite;
     }
-    .brand span{
-      font-size: 13px;
-      color: var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+    @keyframes pulse{
+      0%,100%{ transform:scale(1); opacity:.75;}
+      50%{ transform:scale(1.35); opacity:1;}
     }
+
     .toggle{
+      display:flex; gap:8px;
+      align-items:center;
+    }
+    .btn{
       border: 1px solid var(--stroke);
-      background: transparent;
+      background: linear-gradient(180deg, var(--card2), var(--card));
       color: var(--text);
       padding: 10px 12px;
       border-radius: 14px;
+      font-weight: 650;
       font-size: 13px;
-      cursor:pointer;
-      transition: transform .15s ease, background .15s ease;
-      touch-action: manipulation;
-    }
-    .toggle:active{ transform: scale(.98); }
-    .toggle:hover{ background: rgba(255,255,255,.05); }
-
-    .hero{
-      margin-top: 14px;
-      border: 1px solid var(--stroke);
-      background: linear-gradient(180deg, var(--card2), var(--card));
-      border-radius: calc(var(--radius) + 6px);
+      letter-spacing:.2px;
       box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-      overflow:hidden;
-      transform-style: preserve-3d;
+      backdrop-filter: blur(10px);
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
       position:relative;
+      overflow:hidden;
+      transform: translateZ(0);
+      transition: transform .15s ease, border-color .2s ease, filter .2s ease;
     }
-    .hero::before{
+    .btn:active{ transform: scale(.98); }
+    .btn:hover{ border-color: color-mix(in srgb, var(--accent), var(--stroke) 55%); }
+
+    .btn::after{
       content:"";
       position:absolute; inset:-2px;
-      background: radial-gradient(600px 300px at 20% 20%, rgba(255,255,255,.10), transparent 55%),
-                  radial-gradient(450px 260px at 90% 30%, rgba(255,255,255,.08), transparent 58%);
+      background: radial-gradient(220px 90px at var(--mx,50%) var(--my,50%),
+        color-mix(in srgb, var(--accent), transparent 60%), transparent 70%);
+      opacity: 0;
+      transition: opacity .18s ease;
       pointer-events:none;
     }
+    .btn:hover::after{ opacity: 1; }
 
-    .hero-inner{
+    .btn.primary{
+      border-color: color-mix(in srgb, var(--accent), var(--stroke) 45%);
+    }
+
+    /* 3D stage */
+    .stage{
+      perspective: 1100px;
+      perspective-origin: 50% 30%;
+    }
+
+    .card3d{
+      border-radius: var(--radius);
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--card2), transparent 0%), var(--card));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      overflow:hidden;
+      transform-style: preserve-3d;
       position:relative;
-      padding: 18px 16px 14px;
+    }
+
+    /* glossy rim */
+    .card3d::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background:
+        radial-gradient(600px 220px at 15% 0%, color-mix(in srgb, var(--accent), transparent 72%), transparent 60%),
+        radial-gradient(520px 240px at 85% 10%, color-mix(in srgb, var(--accent2), transparent 75%), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.12), transparent 45%);
+      opacity:.65;
+      pointer-events:none;
+      transform: translateZ(20px);
+      filter: blur(.2px);
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding: 18px;
+      position:relative;
       transform-style: preserve-3d;
     }
 
-    .avatar-row{
+    .heroTop{
+      display:flex;
+      justify-content:space-between;
+      gap: 14px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      transform-style: preserve-3d;
+    }
+
+    .pfpWrap{
+      width: 92px; height: 92px;
+      border-radius: 26px;
+      border: 1px solid color-mix(in srgb, var(--accent), var(--stroke) 65%);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent), transparent 78%), transparent);
+      box-shadow: var(--glow), var(--shadow);
+      overflow:hidden;
+      transform: translateZ(40px);
+      position:relative;
+      flex: 0 0 auto;
+      animation: floaty 3.2s ease-in-out infinite;
+    }
+    @keyframes floaty{
+      0%,100%{ transform: translateZ(40px) translateY(0); }
+      50%{ transform: translateZ(40px) translateY(-8px); }
+    }
+    .pfpWrap img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.05);
+    }
+    .pfpWrap::after{
+      content:"";
+      position:absolute; inset:-20%;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.18), transparent 40%);
+      pointer-events:none;
+      transform: rotate(12deg);
+    }
+
+    .title{
+      min-width: 220px;
+      flex:1 1 auto;
+      transform: translateZ(32px);
+    }
+
+    .nameRow{
       display:flex;
       align-items:center;
-      gap:14px;
-    }
-    .avatar{
-      width: 74px; height: 74px;
-      border-radius: 22px;
-      overflow:hidden;
-      border: 1px solid var(--stroke);
-      box-shadow: 0 14px 30px rgba(0,0,0,.25);
-      flex: 0 0 auto;
-      transform: translateZ(18px);
-      background: rgba(255,255,255,.05);
-    }
-    .avatar img{
-      width:100%; height:100%;
-      object-fit: cover;
-      display:block;
+      gap: 10px;
+      flex-wrap:wrap;
     }
 
-    .name-wrap{ min-width:0; }
     .name{
       font-size: 24px;
-      letter-spacing: .3px;
-      margin: 0;
+      font-weight: 900;
+      letter-spacing: .2px;
       line-height: 1.1;
-      text-shadow: 0 18px 40px rgba(0,0,0,.35);
-      transform: translateZ(22px);
+      margin:0;
+      text-shadow: 0 10px 24px rgba(0,0,0,.35);
+      position:relative;
     }
 
-    /* Name animation (glow + shimmer) */
-    .shimmer{
+    /* typing look */
+    .caret{
       display:inline-block;
-      background: linear-gradient(90deg,
-        rgba(255,255,255,.55) 0%,
-        rgba(255,255,255,.95) 25%,
-        rgba(255,255,255,.55) 50%,
-        rgba(255,255,255,.95) 75%,
-        rgba(255,255,255,.55) 100%);
-      background-size: 220% 100%;
-      -webkit-background-clip: text;
-      background-clip:text;
-      color: transparent;
-      animation: shimmer 2.2s ease-in-out infinite;
-      will-change: background-position;
+      width: 10px;
+      height: 1.05em;
+      transform: translateY(2px);
+      border-right: 3px solid var(--accent);
+      margin-left: 3px;
+      animation: blink .85s steps(1) infinite;
+      filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent), transparent 40%));
     }
-    @keyframes shimmer{
-      0%{ background-position: 0% 50%; }
-      50%{ background-position: 100% 50%; }
-      100%{ background-position: 0% 50%; }
+    @keyframes blink{ 50%{ opacity:0; } }
+
+    /* rainbow shimmer letters */
+    .shimmer{
+      background: linear-gradient(90deg,
+        hsl(var(--hue) 95% 65%),
+        hsl(calc(var(--hue) + 40) 95% 65%),
+        hsl(calc(var(--hue) + 80) 95% 65%),
+        hsl(calc(var(--hue) + 120) 95% 65%),
+        hsl(calc(var(--hue) + 160) 95% 65%));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,.25));
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--accent), var(--stroke) 60%);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--accent), transparent 84%), var(--card));
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text);
+      box-shadow: var(--glow);
+      transform: translateZ(24px);
+      white-space:nowrap;
+    }
+    .check{
+      width: 18px; height: 18px;
+      border-radius: 6px;
+      background: var(--accent);
+      display:inline-grid;
+      place-items:center;
+      color: #071018;
+      font-weight: 900;
+      box-shadow: var(--glow);
     }
 
     .desc{
-      margin: 6px 0 0;
+      margin: 10px 0 0;
       color: var(--muted);
-      font-size: 13.5px;
-      transform: translateZ(16px);
-    }
-
-    .quick{
-      margin-top: 14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      transform: translateZ(14px);
-    }
-    .btn{
-      flex: 1 1 30%;
-      min-width: 100px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 12px 12px;
-      border-radius: 16px;
-      font-size: 13px;
-      text-align:center;
-      cursor:pointer;
-      transition: transform .15s ease, background .15s ease;
-      user-select:none;
-      touch-action: manipulation;
-      position:relative;
-      overflow:hidden;
-    }
-    .btn::after{
-      content:"";
-      position:absolute; inset:0;
-      background: radial-gradient(220px 90px at 20% 20%, rgba(255,255,255,.14), transparent 60%);
-      opacity:.0;
-      transition: opacity .2s ease;
-    }
-    .btn:hover::after{ opacity:.85; }
-    .btn:active{ transform: scale(.98); }
-    .btn.primary{
-      background: rgba(255,255,255,.10);
+      font-size: 14px;
+      line-height: 1.45;
+      max-width: 52ch;
     }
 
     .stats{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:10px;
-      transform: translateZ(12px);
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+      transform: translateZ(20px);
     }
-    .pill{
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
+
+    .chip{
       padding: 10px 12px;
       border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: color-mix(in srgb, var(--card), transparent 0%);
+      font-size: 13px;
+      color: var(--muted);
       display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
+      gap: 8px;
+      align-items:baseline;
+      box-shadow: 0 12px 30px rgba(0,0,0,.22);
     }
-    .pill b{ font-size: 13px; }
-    .pill span{ font-size: 13px; color: var(--muted); }
+    .chip b{
+      color: var(--text);
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
 
-    .mini{
-      margin-top: 10px;
+    .grid{
       display:grid;
       grid-template-columns: 1fr;
-      gap:10px;
-      transform: translateZ(10px);
+      gap: 12px;
+      padding: 0 18px 18px;
+      transform-style: preserve-3d;
     }
-    .row{
-      display:flex; justify-content:space-between; align-items:center; gap:10px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      border-radius: 16px;
-      padding: 10px 12px;
-    }
-    .row .k{ color: var(--muted); font-size: 13px; }
-    .row .v{ font-size: 13px; }
 
-    .footer{
-      margin-top: 14px;
+    .sectionTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-top: 6px;
+      transform: translateZ(16px);
+    }
+    .sectionTitle h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing:.18em;
+      text-transform: uppercase;
       color: var(--muted2);
-      font-size: 12px;
-      text-align:center;
-      padding: 8px 0 0;
+      font-weight: 900;
     }
 
-    /* Modal */
-    .modal{
-      position:fixed; inset:0;
+    .toolsRow{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      transform: translateZ(20px);
+    }
+
+    .toolBtn{
+      padding: 12px 12px;
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      color: var(--text);
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: .2px;
+      box-shadow: 0 14px 36px rgba(0,0,0,.26);
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      transition: transform .16s ease, border-color .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .toolBtn:active{ transform: scale(.98); }
+    .toolBtn::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(240px 120px at var(--mx,50%) var(--my,50%),
+        color-mix(in srgb, var(--accent), transparent 55%), transparent 70%);
+      opacity:.0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+    .toolBtn:hover::before{ opacity:1; }
+    .toolBtn small{
+      display:block;
+      color: var(--muted2);
+      font-weight: 800;
+      letter-spacing:.08em;
+      margin-top: 4px;
+    }
+
+    .aiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      transform: translateZ(18px);
+    }
+
+    .aiCard{
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      background: color-mix(in srgb, var(--card), transparent 0%);
+      padding: 12px 12px;
+      box-shadow: 0 14px 35px rgba(0,0,0,.22);
+      position:relative;
+      overflow:hidden;
+      text-decoration:none;
+      color: var(--text);
+      transition: transform .16s ease, border-color .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .aiCard:active{ transform: scale(.985); }
+    .aiCard:hover{ border-color: color-mix(in srgb, var(--accent2), var(--stroke) 55%); }
+    .aiCard::after{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(260px 120px at var(--mx,50%) var(--my,50%),
+        color-mix(in srgb, var(--accent2), transparent 60%), transparent 70%);
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+    .aiCard:hover::after{ opacity:1; }
+    .aiCard b{
+      display:block;
+      font-size: 14px;
+      font-weight: 950;
+      letter-spacing:.2px;
+    }
+    .aiCard span{
+      display:block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.25;
+    }
+
+    /* modal */
+    .modalBack{
+      position: fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
       display:none;
       align-items:flex-end;
       justify-content:center;
-      background: rgba(0,0,0,.45);
-      z-index:50;
-      padding: 12px;
+      padding: 16px 14px calc(14px + env(safe-area-inset-bottom));
+      z-index: 50;
+      backdrop-filter: blur(10px);
     }
-    .modal.show{ display:flex; }
+    .modalBack.show{ display:flex; animation: fadeIn .18s ease; }
+    @keyframes fadeIn{ from{ opacity:0; } to{ opacity:1; } }
+
     .sheet{
-      width:min(520px, 100%);
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, var(--card2), var(--card));
+      width:min(560px, 100%);
       border-radius: 22px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      box-shadow: 0 25px 70px rgba(0,0,0,.55);
       overflow:hidden;
-      transform: translateY(0);
-      animation: pop .18s ease-out;
+      transform-origin: 50% 100%;
+      animation: popUp .22s cubic-bezier(.2,.9,.2,1);
     }
-    @keyframes pop{
-      from{ transform: translateY(14px); opacity:.6; }
-      to{ transform: translateY(0); opacity:1; }
-    }
-    .sheet-h{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 14px 14px;
-      border-bottom: 1px solid var(--stroke);
-    }
-    .sheet-h b{ font-size: 14px; }
-    .x{
-      border:1px solid var(--stroke);
-      background: transparent;
-      color: var(--text);
-      width: 38px; height: 38px;
-      border-radius: 14px;
-      cursor:pointer;
-    }
-    .sheet-b{
-      padding: 14px;
-    }
-    .sheet-b p{
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-    }
-    .go{
-      display:block;
-      width:100%;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.10);
-      color: var(--text);
-      padding: 12px 12px;
-      border-radius: 16px;
-      font-size: 14px;
-      text-align:center;
-      text-decoration:none;
-    }
-    .hint{
-      margin-top:10px;
-      font-size:12px;
-      color: var(--muted2);
-      text-align:center;
+    @keyframes popUp{
+      from{ transform: translateY(18px) scale(.98); opacity:.8; }
+      to{ transform: translateY(0) scale(1); opacity:1; }
     }
 
-    /* Reduce motion preference */
-    @media (prefers-reduced-motion: reduce){
-      .blob{ animation:none; }
-      .shimmer{ animation:none; color: var(--text); background:none; }
-      .btn, .toggle{ transition:none; }
+    .sheetHead{
+      padding: 14px 14px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--stroke);
+    }
+    .sheetHead b{ font-size: 14px; letter-spacing:.2px; }
+    .sheetBody{ padding: 14px; }
+    .sheetBody p{
+      margin:0 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.5;
+    }
+    .sheetBody a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid color-mix(in srgb, var(--accent), var(--stroke) 60%);
+      background: radial-gradient(300px 120px at 30% 20%, color-mix(in srgb, var(--accent), transparent 70%), transparent 60%),
+                  linear-gradient(180deg, var(--card2), var(--card));
+      color: var(--text);
+      text-decoration:none;
+      font-weight: 950;
+      letter-spacing:.2px;
+      box-shadow: var(--glow);
+      margin-top: 10px;
+    }
+
+    /* welcome overlay */
+    .welcome{
+      position:fixed;
+      inset:0;
+      z-index: 80;
+      display:grid;
+      place-items:center;
+      padding: 18px;
+      background:
+        radial-gradient(900px 600px at 50% 35%, color-mix(in srgb, var(--accent), transparent 80%), transparent 60%),
+        rgba(0,0,0,.56);
+      backdrop-filter: blur(14px);
+    }
+    .welcome.hidden{ display:none; }
+
+    .welcomeCard{
+      width:min(520px, 100%);
+      border-radius: 26px;
+      border: 1px solid color-mix(in srgb, var(--accent), var(--stroke) 55%);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--card2), transparent 0%), var(--card));
+      box-shadow: 0 30px 90px rgba(0,0,0,.65), var(--glow);
+      overflow:hidden;
+      transform-style: preserve-3d;
+      animation: welcomeIn .35s cubic-bezier(.2,.9,.2,1);
+    }
+    @keyframes welcomeIn{
+      from{ transform: translateY(14px) scale(.985); opacity:.6; }
+      to{ transform: translateY(0) scale(1); opacity:1; }
+    }
+
+    .welcomeCard .inner{
+      padding: 18px;
+    }
+    .welcomeTitle{
+      margin:0;
+      font-size: 20px;
+      font-weight: 1000;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+    }
+    .welcomeTitle .shimmer{ background-size: 220% 100%; }
+
+    .welcomeMsg{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.6;
+    }
+    .welcomeBtns{
+      display:flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap:wrap;
+    }
+    .welcomeBtns .btn{ flex: 1 1 160px; }
+
+    /* responsive tweaks */
+    @media (min-width: 760px){
+      .hero{
+        grid-template-columns: 1fr;
+      }
+      .toolsRow{ grid-template-columns: repeat(3, 1fr); }
+      .aiGrid{ grid-template-columns: repeat(3, 1fr); }
+      .pfpWrap{ width: 104px; height: 104px; }
+      .name{ font-size: 28px; }
     }
   </style>
 </head>
-
 <body>
-  <div class="stage" aria-hidden="true">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
-  </div>
-
-  <main class="wrap">
-    <div class="topbar" id="tiltTop">
-      <div class="brand">
-        <div class="dot"></div>
-        <span>Mobile 3D Portfolio</span>
-      </div>
-      <button class="toggle" id="themeBtn">🌙 Dark</button>
-    </div>
-
-    <section class="hero" id="tiltHero">
-      <div class="hero-inner">
-        <div class="avatar-row">
-          <div class="avatar">
-            <img
-              src="https://img.sanishtech.com/u/26a2f7005696403d64c7854507e2a4c9.jpg"
-              alt="Reniel Tabora"
-              loading="lazy"
-            />
-          </div>
-          <div class="name-wrap">
-            <h1 class="name"><span class="shimmer" id="nameText">Reniel Tabora</span></h1>
-            <p class="desc">App Modder 2022–2026 and Editor videos</p>
-          </div>
+  <!-- Welcome Overlay -->
+  <div class="welcome" id="welcome">
+    <div class="welcomeCard" id="welcomeCard">
+      <div class="inner">
+        <h1 class="welcomeTitle"><span class="shimmer" id="welcomeText">WELCOME</span></h1>
+        <p class="welcomeMsg" id="welcomeSub">
+          Loading 3D experience… Rainbow theme enabled ✨<br/>
+          Tap “Enter” to continue.
+        </p>
+        <div class="welcomeBtns">
+          <button class="btn primary" id="enterBtn">Enter</button>
+          <button class="btn" id="skipAnimBtn">Skip animation</button>
         </div>
-
-        <!-- TOP BUTTONS (3 + More for Autobot) -->
-        <div class="quick">
-          <div class="btn primary" data-title="TikTok Downloader" data-url="https://snaptik.app/download-story-tiktok">
-            TikTok
-          </div>
-          <div class="btn primary" data-title="Facebook Downloader" data-url="https://fdown.net/">
-            Facebook
-          </div>
-          <div class="btn primary" data-title="Instagram Downloader" data-url="https://snapinsta.to/en2">
-            Instagram
-          </div>
-          <div class="btn" data-title="Autobot" data-url="https://auto-zvok.onrender.com/">
-            More
-          </div>
-        </div>
-
-        <!-- Followers / Likes / Views -->
-        <div class="stats">
-          <div class="pill"><b>Followers</b><span>41k</span></div>
-          <div class="pill"><b>Likes</b><span>392k</span></div>
-          <div class="pill"><b>Views</b><span id="views">0</span></div>
-          <div class="pill"><b>Battery</b><span id="battery">--%</span></div>
-        </div>
-
-        <!-- Philippines Time / Date -->
-        <div class="mini">
-          <div class="row">
-            <div class="k">Philippines Time</div>
-            <div class="v" id="phTime">--:--</div>
-          </div>
-          <div class="row">
-            <div class="k">Philippines Date</div>
-            <div class="v" id="phDate">---</div>
-          </div>
-        </div>
-
-        <div class="footer">© <span id="year"></span> Reniel Tabora • Smooth 3D • Mobile-first</div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Modal -->
-  <div class="modal" id="modal">
-    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-      <div class="sheet-h">
-        <b id="mTitle">Title</b>
-        <button class="x" id="closeBtn" aria-label="Close">✕</button>
-      </div>
-      <div class="sheet-b">
-        <p id="mDesc">Open the tool in a new tab.</p>
-        <a class="go" id="goLink" href="#" target="_blank" rel="noopener noreferrer">Open</a>
-        <div class="hint">Tip: If it doesn’t open, check your browser pop-up settings.</div>
       </div>
     </div>
   </div>
 
-  <script>
-    // ---------- THEME ----------
-    const themeBtn = document.getElementById('themeBtn');
-    const savedTheme = localStorage.getItem('rt_theme');
-    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+  <div class="wrap">
+    <div class="topbar">
+      <div class="pill status">
+        <span class="dot"></span>
+        <span id="phTime">Loading time…</span>
+        <span>•</span>
+        <span id="battery">Battery: --%</span>
+      </div>
 
-    function syncThemeButton(){
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      themeBtn.textContent = isLight ? '☀️ Light' : '🌙 Dark';
-    }
-    syncThemeButton();
+      <div class="toggle">
+        <button class="btn" id="themeBtn" title="Toggle Dark/Light">Dark/Light</button>
+      </div>
+    </div>
 
-    themeBtn.addEventListener('click', () => {
-      const cur = document.documentElement.getAttribute('data-theme');
-      const next = cur === 'light' ? 'dark' : 'light';
-      if (next === 'dark') document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme', 'light');
-      localStorage.setItem('rt_theme', next);
-      syncThemeButton();
-    });
+    <div class="stage" id="stage">
+      <div class="card3d" id="card3d" aria-label="Reniel Tabora Portfolio">
+        <div class="hero">
+          <div class="heroTop">
+            <div class="pfpWrap">
+              <img src="https://img.sanishtech.com/u/86253bb941bdfbe89ddfccb8fe766965.jpg" alt="Reniel Tabora profile picture" />
+            </div>
 
-    // ---------- VIEWS COUNTER (per device/browser) ----------
-    const viewsEl = document.getElementById('views');
-    const key = 'rt_views';
-    const current = Number(localStorage.getItem(key) || '0') + 1;
-    localStorage.setItem(key, String(current));
-    viewsEl.textContent = current.toLocaleString();
+            <div class="title">
+              <div class="nameRow">
+                <h1 class="name">
+                  <span class="shimmer" id="typedName"></span><span class="caret" id="caret"></span>
+                </h1>
+                <span class="badge" title="Verified">
+                  <span class="check">✓</span> Verified
+                </span>
+              </div>
 
-    // ---------- BATTERY ----------
-    const batteryEl = document.getElementById('battery');
-    async function initBattery(){
-      try{
-        if (!navigator.getBattery) {
-          batteryEl.textContent = 'N/A';
-          return;
-        }
-        const bat = await navigator.getBattery();
-        const update = () => {
-          batteryEl.textContent = Math.round(bat.level * 100) + '%';
-        };
-        update();
-        bat.addEventListener('levelchange', update);
-        bat.addEventListener('chargingchange', update);
-      }catch(e){
-        batteryEl.textContent = 'N/A';
-      }
-    }
-    initBattery();
+              <p class="desc">
+                <b style="color:var(--text)">App Modder 2022-2026</b> and <b style="color:var(--text)">Editor videos</b>.
+                3D mobile portfolio with rainbow effects, fast tools, and AI hub.
+              </p>
 
-    // ---------- PH TIME/DATE ----------
-    const phTime = document.getElementById('phTime');
-    const phDate = document.getElementById('phDate');
+              <div class="stats">
+                <div class="chip"><span>Followers</span> <b>41k</b></div>
+                <div class="chip"><span>Likes</span> <b>392k</b></div>
+                <div class="chip"><span>Views</span> <b id="views">0</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    function tickPH(){
-      const now = new Date();
-      const timeFmt = new Intl.DateTimeFormat('en-PH', {
-        timeZone: 'Asia/Manila',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
-      const dateFmt = new Intl.DateTimeFormat('en-PH', {
-        timeZone: 'Asia/Manila',
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: '2-digit'
-      });
-      phTime.textContent = timeFmt.format(now);
-      phDate.textContent = dateFmt.format(now);
-    }
-    tickPH();
-    setInterval(tickPH, 1000);
+        <div class="grid">
+          <div class="sectionTitle">
+            <h2>Tools</h2>
+            <button class="btn" id="randomHueBtn" title="Random rainbow">Rainbow</button>
+          </div>
 
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // ---------- MODAL LINKS ----------
-    const modal = document.getElementById('modal');
-    const mTitle = document.getElementById('mTitle');
-    const mDesc = document.getElementById('mDesc');
-    const goLink = document.getElementById('goLink');
-    const closeBtn = document.getElementById('closeBtn');
-
-    function openModal(title, url){
-      mTitle.textContent = title;
-      mDesc.textContent = 'Tap "Open" to launch the tool in a new tab.';
-      goLink.href = url;
-      goLink.textContent = 'Open ' + title;
-      modal.classList.add('show');
-    }
-    function closeModal(){ modal.classList.remove('show'); }
-
-    document.querySelectorAll('.btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const title = btn.getAttribute('data-title');
-        const url = btn.getAttribute('data-url');
-        openModal(title, url);
-      });
-    });
-
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
-
-    // ---------- 3D PARALLAX (smooth, lightweight) ----------
-    const tiltHero = document.getElementById('tiltHero');
-    const tiltTop = document.getElementById('tiltTop');
-
-    let targetX = 0, targetY = 0;
-    let curX = 0, curY = 0;
-
-    function setTargetsFromPoint(px, py){
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-      targetX = (px - cx) / cx;   // -1..1
-      targetY = (py - cy) / cy;   // -1..1
-    }
-
-    window.addEventListener('pointermove', (e) => {
-      setTargetsFromPoint(e.clientX, e.clientY);
-    }, { passive:true });
-
-    // Mobile tilt support (optional, graceful)
-    window.addEventListener('deviceorientation', (e) => {
-      if (e.beta == null || e.gamma == null) return;
-      const gx = Math.max(-30, Math.min(30, e.gamma)) / 30; // -1..1
-      const by = Math.max(-30, Math.min(30, e.beta)) / 30;  // -1..1
-      targetX = gx;
-      targetY = by;
-    }, { passive:true });
-
-    function animate(){
-      // smooth interpolation
-      curX += (targetX - curX) * 0.06;
-      curY += (targetY - curY) * 0.06;
-
-      const rx = (-curY * 6).toFixed(3);
-      const ry = (curX * 8).toFixed(3);
-      const rx2 = (-curY * 3).toFixed(3);
-      const ry2 = (curX * 4).toFixed(3);
-
-      tiltHero.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
-      tiltTop.style.transform  = `rotateX(${rx2}deg) rotateY(${ry2}deg) translateZ(0)`;
-
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    // ---------- Name micro animation (type-in once) ----------
-    const nameEl = document.getElementById('nameText');
-    const full = nameEl.textContent.trim();
-    nameEl.textContent = '';
-    let i = 0;
-    const typeTimer = setInterval(() => {
-      i++;
-      nameEl.textContent = full.slice(0, i);
-      if (i >= full.length) clearInterval(typeTimer);
-    }, 55);
-  </script>
-</body>
-                               </html>
+          <!-- TOP 3 BUTTONS -->
+          <div class="toolsRow">
+            <button class="toolBtn" data-open="tiktok">
+              TikTok Downloader
+              <small>SnapTik</small>
+            </button>
+            <button class="toolBtn" data-open="facebook">
+              Facebook Downloader
+              <small>FDown</small>
+            </button>
+            <button class="toolBtn" data-open="instagram">
+              Instagram Downloader
+              <small>SnapInsta</small>
+            
